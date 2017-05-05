@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <base href="<%=basePath%>">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport"
+          content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no"/>
+    <script type="text/javascript" src="${request.getContextPath()}/js/jquery.js"></script>
+    <link rel="stylesheet" type="text/css" href="${request.getContextPath()}/css/style.css" media="all"/>
+    <title>消息提示</title>
+</head>
+<body>
+<div>
+    <p>您的微信已经和账户绑定</p>
+</div>
+</body>
+</html>

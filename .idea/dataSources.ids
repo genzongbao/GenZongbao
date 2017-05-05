@@ -1,0 +1,982 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component name="dataSourceStorage">
+  <data-source name="MySQL - gzbfb@localhost" uuid="94d05b5b-15f1-43f4-a1e5-734ad7bbe41c">
+    <database-info product="MySQL" version="5.7.14-log" jdbc-version="4.0" driver-name="MySQL Connector Java" driver-version="mysql-connector-java-5.1.40 ( Revision: 402933ef52cad9aa82624e80acbea46e3a701ce6 )">
+      <extra-name-characters>#@</extra-name-characters>
+      <identifier-quote-string>`</identifier-quote-string>
+    </database-info>
+    <case-sensitivity plain-identifiers="lower" quoted-identifiers="lower"/>
+    <database-model serializer="dbm" rdbms="MYSQL" format-version="2.5">
+      <schema id="1" name="gzbfb"/>
+      <table id="2" parent="1" name="comment_attached">
+        <comment>评论附件</comment>
+      </table>
+      <table id="3" parent="1" name="cus_message_mapping"/>
+      <table id="4" parent="1" name="cus_tag"/>
+      <table id="5" parent="1" name="cus_tag_mapping"/>
+      <table id="6" parent="1" name="customer">
+        <comment>前台客户表; InnoDB free: 11264 kB</comment>
+      </table>
+      <table id="7" parent="1" name="customer_friend_mapping">
+        <comment>用户好友关系</comment>
+      </table>
+      <table id="8" parent="1" name="customer_messages">
+        <comment>客户消息表</comment>
+      </table>
+      <table id="9" parent="1" name="event">
+        <comment>事件表</comment>
+      </table>
+      <table id="10" parent="1" name="event_change_condition">
+        <comment>事件改变条件</comment>
+      </table>
+      <table id="11" parent="1" name="event_comment">
+        <comment>事件评论</comment>
+      </table>
+      <table id="12" parent="1" name="event_cus_mapping">
+        <comment>事件人员</comment>
+      </table>
+      <table id="13" parent="1" name="event_tag">
+        <comment>事件分类</comment>
+      </table>
+      <table id="14" parent="1" name="event_tag_mapping"/>
+      <table id="15" parent="1" name="event_tamplate">
+        <comment>模板</comment>
+      </table>
+      <table id="16" parent="1" name="menus">
+        <comment>菜单表</comment>
+      </table>
+      <table id="17" parent="1" name="news">
+        <comment>新闻表</comment>
+      </table>
+      <table id="18" parent="1" name="news_column">
+        <comment>新闻栏目表</comment>
+      </table>
+      <table id="19" parent="1" name="news_type">
+        <comment>新闻类型表</comment>
+      </table>
+      <table id="20" parent="1" name="push_message"/>
+      <table id="21" parent="1" name="push_setting">
+        <comment>推送设置</comment>
+      </table>
+      <table id="22" parent="1" name="quote_relation"/>
+      <table id="23" parent="1" name="roles">
+        <comment>角色表</comment>
+      </table>
+      <table id="24" parent="1" name="upload_file">
+        <comment>上传文件记录表</comment>
+      </table>
+      <table id="25" parent="1" name="user_role">
+        <comment>用户角色关系表</comment>
+      </table>
+      <table id="26" parent="1" name="users">
+        <comment>后台用户表</comment>
+      </table>
+      <column id="27" parent="2" name="COMMENT_ATTACHED_ID">
+        <mandatory>1</mandatory>
+        <data-type>int(11)</data-type>
+        <sequence-identity>1</sequence-identity>
+      </column>
+      <column id="28" parent="2" name="COMMENT_ATTACHED_CREATE_DATE">
+        <comment>创建时间</comment>
+        <data-type>datetime</data-type>
+      </column>
+      <column id="29" parent="2" name="ATTACHED_TYPE">
+        <comment>附件类型 0 图片 1 文件 2 事件</comment>
+        <data-type>int(1)</data-type>
+      </column>
+      <column id="30" parent="2" name="ATTACHED_ID">
+        <comment>附件ID</comment>
+        <data-type>int(11)</data-type>
+      </column>
+      <key id="31" parent="2" name="PRIMARY">
+        <columns>COMMENT_ATTACHED_ID</columns>
+        <primary>1</primary>
+      </key>
+      <column id="32" parent="3" name="CUS_MESSAGE_MAPPING_ID">
+        <mandatory>1</mandatory>
+        <data-type>varchar(32)</data-type>
+      </column>
+      <column id="33" parent="3" name="MESSAGE_ID">
+        <comment>消息id</comment>
+        <data-type>varchar(32)</data-type>
+      </column>
+      <column id="34" parent="3" name="CLASSIFICATION">
+        <comment>消息分类</comment>
+        <data-type>int(1)</data-type>
+      </column>
+      <column id="35" parent="3" name="CUS_ID">
+        <comment>用户id</comment>
+        <data-type>int(20)</data-type>
+      </column>
+      <column id="36" parent="3" name="READ_FLAG">
+        <comment>是否已读</comment>
+        <data-type>int(1)</data-type>
+      </column>
+      <key id="37" parent="3" name="PRIMARY">
+        <columns>CUS_MESSAGE_MAPPING_ID</columns>
+        <primary>1</primary>
+      </key>
+      <column id="38" parent="4" name="CUS_TAG_ID">
+        <mandatory>1</mandatory>
+        <data-type>varchar(32)</data-type>
+      </column>
+      <column id="39" parent="4" name="CUS_TAG_NAME">
+        <comment>群组标签名</comment>
+        <data-type>varchar(255)</data-type>
+      </column>
+      <column id="40" parent="4" name="CUS_ID">
+        <comment>创建用户</comment>
+        <data-type>varchar(32)</data-type>
+      </column>
+      <column id="41" parent="4" name="CREATE_DATE">
+        <data-type>datetime</data-type>
+      </column>
+      <column id="42" parent="4" name="COUNT_CUS">
+        <comment>标签下人数</comment>
+        <data-type>int(11)</data-type>
+        <default-expression>&apos;0&apos;</default-expression>
+      </column>
+      <key id="43" parent="4" name="PRIMARY">
+        <columns>CUS_TAG_ID</columns>
+        <primary>1</primary>
+      </key>
+      <column id="44" parent="5" name="CUS_TAG_MAPPING_ID">
+        <mandatory>1</mandatory>
+        <data-type>varchar(32)</data-type>
+      </column>
+      <column id="45" parent="5" name="CUS_TAG_ID">
+        <comment>用户标签id</comment>
+        <data-type>varchar(32)</data-type>
+      </column>
+      <column id="46" parent="5" name="CUS_ID">
+        <comment>所关联用户</comment>
+        <data-type>varchar(32)</data-type>
+      </column>
+      <column id="47" parent="5" name="CHANGE_DATE">
+        <comment>改变日期</comment>
+        <data-type>datetime</data-type>
+      </column>
+      <key id="48" parent="5" name="PRIMARY">
+        <columns>CUS_TAG_MAPPING_ID</columns>
+        <primary>1</primary>
+      </key>
+      <column id="49" parent="6" name="CUS_ID">
+        <comment>客户ID</comment>
+        <mandatory>1</mandatory>
+        <data-type>int(32)</data-type>
+        <sequence-identity>1</sequence-identity>
+      </column>
+      <column id="50" parent="6" name="CUS_LOG_NAME">
+        <comment>登录名</comment>
+        <data-type>varchar(255)</data-type>
+      </column>
+      <column id="51" parent="6" name="CUS_PASSWORD">
+        <comment>密码(MD5)</comment>
+        <data-type>varchar(255)</data-type>
+      </column>
+      <column id="52" parent="6" name="CUS_PHONE">
+        <comment>手机号码</comment>
+        <data-type>varchar(255)</data-type>
+      </column>
+      <column id="53" parent="6" name="CUS_REG_DATETIME">
+        <comment>注册日期</comment>
+        <data-type>datetime</data-type>
+      </column>
+      <column id="54" parent="6" name="CUS_LAST_LOG_DATETIME">
+        <comment>最后登录日期</comment>
+        <data-type>datetime</data-type>
+      </column>
+      <column id="55" parent="6" name="CUS_STATE">
+        <comment>状态||0：正常||1：临时|2：冻结|3：注销</comment>
+        <data-type>int(11)</data-type>
+      </column>
+      <column id="56" parent="6" name="CUS_HEAD_IMG">
+        <comment>头像</comment>
+        <data-type>varchar(255)</data-type>
+        <default-expression>&apos;&apos;</default-expression>
+      </column>
+      <column id="57" parent="6" name="ACCOUNT_TYPE">
+        <comment>账户类型</comment>
+        <data-type>int(1)</data-type>
+        <default-expression>&apos;0&apos;</default-expression>
+      </column>
+      <column id="58" parent="6" name="EMAIL_ADDRESS">
+        <comment>电子邮件地址</comment>
+        <data-type>varchar(255)</data-type>
+      </column>
+      <column id="59" parent="6" name="WX_OPEN_ID">
+        <comment>微信openid</comment>
+        <data-type>varchar(255)</data-type>
+      </column>
+      <column id="60" parent="6" name="PUSH_ALIAS">
+        <comment>JPUSH别名</comment>
+        <data-type>varchar(32)</data-type>
+      </column>
+      <index id="61" parent="6" name="CUS_LOG_NAME">
+        <columns>CUS_LOG_NAME</columns>
+        <desc-columns></desc-columns>
+        <unique>1</unique>
+      </index>
+      <key id="62" parent="6" name="CUS_LOG_NAME">
+        <columns>CUS_LOG_NAME</columns>
+        <underlying-index>CUS_LOG_NAME</underlying-index>
+      </key>
+      <key id="63" parent="6" name="PRIMARY">
+        <columns>CUS_ID</columns>
+        <primary>1</primary>
+      </key>
+      <column id="64" parent="7" name="CUS_FRIEND_MAPPING_ID">
+        <comment>ID</comment>
+        <mandatory>1</mandatory>
+        <data-type>varchar(32)</data-type>
+      </column>
+      <column id="65" parent="7" name="CUS_ID">
+        <comment>用户ID</comment>
+        <data-type>int(11)</data-type>
+      </column>
+      <column id="66" parent="7" name="FRIEND_ID">
+        <comment>朋友ID</comment>
+        <data-type>int(11)</data-type>
+      </column>
+      <key id="67" parent="7" name="PRIMARY">
+        <columns>CUS_FRIEND_MAPPING_ID</columns>
+        <primary>1</primary>
+      </key>
+      <column id="68" parent="8" name="MSG_ID">
+        <comment>消息ID</comment>
+        <mandatory>1</mandatory>
+        <data-type>int(11)</data-type>
+        <sequence-identity>1</sequence-identity>
+      </column>
+      <column id="69" parent="8" name="MESSAGE_TYPE">
+        <comment>消息类型</comment>
+        <data-type>int(11)</data-type>
+      </column>
+      <column id="70" parent="8" name="MSG_TITLE">
+        <comment>消息标题</comment>
+        <mandatory>1</mandatory>
+        <data-type>varchar(256)</data-type>
+      </column>
+      <column id="71" parent="8" name="MSG_CONTENT">
+        <comment>消息内容</comment>
+        <mandatory>1</mandatory>
+        <data-type>text</data-type>
+      </column>
+      <column id="72" parent="8" name="CUS_ID">
+        <comment>客户ID</comment>
+        <data-type>int(11)</data-type>
+      </column>
+      <column id="73" parent="8" name="RECEIVE_TIME">
+        <comment>接收时间</comment>
+        <mandatory>1</mandatory>
+        <data-type>datetime</data-type>
+      </column>
+      <column id="74" parent="8" name="IS_READ">
+        <comment>是否阅读:0未读;1已读;2删除</comment>
+        <mandatory>1</mandatory>
+        <data-type>int(11)</data-type>
+      </column>
+      <index id="75" parent="8" name="CUSTOMER_MESSAGE">
+        <columns>MSG_ID</columns>
+        <desc-columns></desc-columns>
+      </index>
+      <index id="76" parent="8" name="FK_CUSTOMER_MESSAGES_CUSID_CUSTOMER_CUSID">
+        <columns>CUS_ID</columns>
+        <desc-columns></desc-columns>
+      </index>
+      <key id="77" parent="8" name="PRIMARY">
+        <columns>MSG_ID</columns>
+        <primary>1</primary>
+      </key>
+      <column id="78" parent="9" name="EVENT_ID">
+        <mandatory>1</mandatory>
+        <data-type>varchar(32)</data-type>
+      </column>
+      <column id="79" parent="9" name="EVENT_NAME">
+        <comment>事件名称</comment>
+        <data-type>varchar(30)</data-type>
+      </column>
+      <column id="80" parent="9" name="EVENT_CREATE_DATE">
+        <comment>创建时间</comment>
+        <data-type>datetime</data-type>
+      </column>
+      <column id="81" parent="9" name="EVENT_START_DATE">
+        <comment>事件开始时间</comment>
+        <data-type>datetime</data-type>
+      </column>
+      <column id="82" parent="9" name="EVENT_FINISH_DATE">
+        <comment>完成时间</comment>
+        <data-type>datetime</data-type>
+      </column>
+      <column id="83" parent="9" name="EVENT_REAL_FINISH_DATE">
+        <comment>事件真实完成时间</comment>
+        <data-type>datetime</data-type>
+      </column>
+      <column id="84" parent="9" name="HIGHER_EVENT_ID">
+        <comment>上级事件ID</comment>
+        <data-type>varchar(32)</data-type>
+      </column>
+      <column id="85" parent="9" name="EVENT_DETAIL">
+        <comment>事件描述</comment>
+        <data-type>varchar(255)</data-type>
+      </column>
+      <column id="86" parent="9" name="EVENT_TYPE">
+        <comment>节点/事件类型：0普通节点，1记录过程节点，2节点验收节点，3事件完结节点。</comment>
+        <data-type>int(2)</data-type>
+        <default-expression>&apos;0&apos;</default-expression>
+      </column>
+      <column id="87" parent="9" name="EVENT_CHANGE_TYPE">
+        <comment>事件可否改变 0 不能 1可以</comment>
+        <data-type>int(2)</data-type>
+        <default-expression>&apos;0&apos;</default-expression>
+      </column>
+      <column id="88" parent="9" name="EVENT_STATE">
+        <comment>事件状态 0进行中，1已完结，2未开始，3已提交汇报过程，4，已提交申请完结，5验收不通过，6验收通过</comment>
+        <data-type>int(2)</data-type>
+      </column>
+      <column id="89" parent="9" name="COMMENT_COUNT">
+        <comment>评论数</comment>
+        <mandatory>1</mandatory>
+        <data-type>int(11)</data-type>
+        <default-expression>&apos;0&apos;</default-expression>
+      </column>
+      <column id="90" parent="9" name="INSPECTED_STATE">
+        <comment>验收状态0 ：未验收1：已验收</comment>
+        <data-type>int(2)</data-type>
+        <default-expression>&apos;0&apos;</default-expression>
+      </column>
+      <column id="91" parent="9" name="SHARE_FLAG">
+        <comment>是否可分享  0 不可 1 可以</comment>
+        <data-type>int(11)</data-type>
+        <default-expression>&apos;0&apos;</default-expression>
+      </column>
+      <column id="92" parent="9" name="OVER_TIME_FLAG">
+        <comment>超时标识 0 不 1 是</comment>
+        <data-type>int(11)</data-type>
+        <default-expression>&apos;0&apos;</default-expression>
+      </column>
+      <column id="93" parent="9" name="OVER_TIME_STOP">
+        <comment>超时是否停止标识 0 不 1 是</comment>
+        <data-type>int(11)</data-type>
+        <default-expression>&apos;0&apos;</default-expression>
+      </column>
+      <column id="94" parent="9" name="EVENT_LAST_CHANGE_DATE">
+        <comment>最后变更时间</comment>
+        <data-type>datetime</data-type>
+      </column>
+      <column id="95" parent="9" name="TEMPLATE_DATA">
+        <comment>是否是模板</comment>
+        <data-type>int(2)</data-type>
+        <default-expression>&apos;0&apos;</default-expression>
+      </column>
+      <key id="96" parent="9" name="PRIMARY">
+        <columns>EVENT_ID</columns>
+        <primary>1</primary>
+      </key>
+      <column id="97" parent="10" name="EVENT_CHANGE_CONDITION_ID">
+        <comment>id</comment>
+        <mandatory>1</mandatory>
+        <data-type>varchar(32)</data-type>
+      </column>
+      <column id="98" parent="10" name="EVENT_ID">
+        <comment>被改变事件ID</comment>
+        <data-type>varchar(255)</data-type>
+      </column>
+      <column id="99" parent="10" name="EVENT_STATE">
+        <comment>事件状态</comment>
+        <data-type>int(2)</data-type>
+      </column>
+      <column id="100" parent="10" name="CONDITION_EVENT_ID">
+        <comment>条件事件ID</comment>
+        <data-type>varchar(255)</data-type>
+      </column>
+      <column id="101" parent="10" name="CONDITION_EVENT_STATE">
+        <comment>条件事件状态</comment>
+        <data-type>int(255)</data-type>
+      </column>
+      <column id="102" parent="10" name="CONDITION_AND">
+        <comment>条件是否全部满足 0 否 1 是</comment>
+        <data-type>int(2)</data-type>
+        <default-expression>&apos;0&apos;</default-expression>
+      </column>
+      <column id="103" parent="10" name="CONDITION_CREATE_DATE">
+        <comment>创建时间</comment>
+        <data-type>datetime</data-type>
+      </column>
+      <column id="104" parent="10" name="IS_FULFIL">
+        <comment>条件是否已满足</comment>
+        <data-type>int(2)</data-type>
+      </column>
+      <key id="105" parent="10" name="PRIMARY">
+        <columns>EVENT_CHANGE_CONDITION_ID</columns>
+        <primary>1</primary>
+      </key>
+      <column id="106" parent="11" name="EVENT_COMMENT_ID">
+        <comment>事件评论ID</comment>
+        <mandatory>1</mandatory>
+        <data-type>varchar(32)</data-type>
+      </column>
+      <column id="107" parent="11" name="CUS_ID">
+        <comment>用户ID</comment>
+        <data-type>int(11)</data-type>
+      </column>
+      <column id="108" parent="11" name="COMMENT_CONTENT">
+        <comment>评论内容</comment>
+        <data-type>varchar(255)</data-type>
+      </column>
+      <column id="109" parent="11" name="COMMENT_DATE">
+        <comment>评论时间</comment>
+        <data-type>datetime</data-type>
+      </column>
+      <column id="110" parent="11" name="EVENT_ID">
+        <comment>事件ID</comment>
+        <data-type>varchar(32)</data-type>
+      </column>
+      <column id="111" parent="11" name="LOCATION_AND_CODE">
+        <comment>位置</comment>
+        <data-type>varchar(255)</data-type>
+      </column>
+      <column id="112" parent="11" name="COMMENT_TYPE">
+        <comment>评论类型：0：普通评论，1：进程汇报，2：申请完结，3、验收通过，4、验收不通过</comment>
+        <data-type>int(2)</data-type>
+      </column>
+      <key id="113" parent="11" name="PRIMARY">
+        <columns>EVENT_COMMENT_ID</columns>
+        <primary>1</primary>
+      </key>
+      <column id="114" parent="12" name="EVENT_CUS_MAPPING_ID">
+        <comment>ID</comment>
+        <mandatory>1</mandatory>
+        <data-type>varchar(32)</data-type>
+      </column>
+      <column id="115" parent="12" name="CUS_ID">
+        <comment>用户ID</comment>
+        <data-type>int(11)</data-type>
+      </column>
+      <column id="116" parent="12" name="EVENT_ROLE">
+        <comment>角色类型 0 创建人 1 责任人 2 验收人 3 评论人 4 节点负责人</comment>
+        <data-type>int(11)</data-type>
+      </column>
+      <column id="117" parent="12" name="EVENT_ID">
+        <comment>事件ID</comment>
+        <data-type>varchar(32)</data-type>
+      </column>
+      <column id="118" parent="12" name="CHANGE_FLAG">
+        <comment>是否变更0：否，1：是</comment>
+        <data-type>int(2)</data-type>
+      </column>
+      <column id="119" parent="12" name="COMMENT_FLAG">
+        <comment>是否已评价0：否，1：是</comment>
+        <data-type>int(2)</data-type>
+      </column>
+      <column id="120" parent="12" name="CHANGE_DATE">
+        <comment>变更时间</comment>
+        <data-type>datetime</data-type>
+      </column>
+      <key id="121" parent="12" name="PRIMARY">
+        <columns>EVENT_CUS_MAPPING_ID</columns>
+        <primary>1</primary>
+      </key>
+      <column id="122" parent="13" name="EVENT_TAG_ID">
+        <comment>标签ID</comment>
+        <mandatory>1</mandatory>
+        <data-type>varchar(32)</data-type>
+      </column>
+      <column id="123" parent="13" name="EVENT_TAG_NAME">
+        <comment>标签名称</comment>
+        <data-type>varchar(21800)</data-type>
+      </column>
+      <column id="124" parent="13" name="CUS_ID">
+        <comment>用户ID</comment>
+        <data-type>int(11)</data-type>
+      </column>
+      <column id="125" parent="13" name="EVENT_TAG_CREATE_DATE">
+        <comment>创建时间</comment>
+        <data-type>datetime</data-type>
+      </column>
+      <column id="126" parent="13" name="TAG_STATUS">
+        <comment>标签是否有效0有效，1无效</comment>
+        <data-type>int(2)</data-type>
+      </column>
+      <column id="127" parent="13" name="SORT_INDEX">
+        <comment>标签顺序</comment>
+        <data-type>int(10)</data-type>
+      </column>
+      <column id="128" parent="13" name="TAG_TYPE">
+        <comment>标签类型，0：共有，1：私有</comment>
+        <data-type>int(1)</data-type>
+        <default-expression>&apos;1&apos;</default-expression>
+      </column>
+      <key id="129" parent="13" name="PRIMARY">
+        <columns>EVENT_TAG_ID</columns>
+        <primary>1</primary>
+      </key>
+      <column id="130" parent="14" name="event_tag_mapping_id">
+        <comment>id</comment>
+        <mandatory>1</mandatory>
+        <data-type>varchar(32)</data-type>
+      </column>
+      <column id="131" parent="14" name="event_tag_id">
+        <comment>标签id</comment>
+        <data-type>varchar(32)</data-type>
+      </column>
+      <column id="132" parent="14" name="event_id">
+        <comment>事件id</comment>
+        <data-type>varchar(32)</data-type>
+      </column>
+      <column id="133" parent="14" name="change_date">
+        <comment>变动日期</comment>
+        <data-type>datetime</data-type>
+      </column>
+      <key id="134" parent="14" name="PRIMARY">
+        <columns>event_tag_mapping_id</columns>
+        <primary>1</primary>
+      </key>
+      <column id="135" parent="15" name="EVENT_TEMPLATE_ID">
+        <mandatory>1</mandatory>
+        <data-type>varchar(32)</data-type>
+      </column>
+      <column id="136" parent="15" name="EVENT_ID">
+        <data-type>varchar(255)</data-type>
+      </column>
+      <column id="137" parent="15" name="EVENT_NAME">
+        <comment>事件名</comment>
+        <data-type>varchar(255)</data-type>
+      </column>
+      <column id="138" parent="15" name="TEMPLATE_TYPE">
+        <comment>模板类型 0 公用模板 1 个人模板</comment>
+        <data-type>int(2)</data-type>
+      </column>
+      <column id="139" parent="15" name="CUS_ID">
+        <data-type>int(11)</data-type>
+      </column>
+      <key id="140" parent="15" name="PRIMARY">
+        <columns>EVENT_TEMPLATE_ID</columns>
+        <primary>1</primary>
+      </key>
+      <column id="141" parent="16" name="MENU_ID">
+        <comment>菜单ID</comment>
+        <mandatory>1</mandatory>
+        <data-type>varchar(50)</data-type>
+        <default-expression>&apos;&apos;</default-expression>
+      </column>
+      <column id="142" parent="16" name="PERMISSION_CODE">
+        <comment>权限代码</comment>
+        <data-type>varchar(100)</data-type>
+      </column>
+      <column id="143" parent="16" name="MENU_NAME">
+        <comment>菜单名称</comment>
+        <mandatory>1</mandatory>
+        <data-type>varchar(255)</data-type>
+        <default-expression>&apos;&apos;</default-expression>
+      </column>
+      <column id="144" parent="16" name="PARENT_MENU_ID">
+        <comment>父菜单名</comment>
+        <data-type>varchar(50)</data-type>
+      </column>
+      <column id="145" parent="16" name="SORT">
+        <comment>排序</comment>
+        <data-type>int(11)</data-type>
+      </column>
+      <column id="146" parent="16" name="URL">
+        <comment>菜单对应URL地址</comment>
+        <data-type>varchar(255)</data-type>
+        <default-expression>&apos;&apos;</default-expression>
+      </column>
+      <column id="147" parent="16" name="SYS_TYPE">
+        <comment>菜单所属系统</comment>
+        <data-type>int(11)</data-type>
+      </column>
+      <index id="148" parent="16" name="FK_MENUS_FUNCTIONID">
+        <columns>PERMISSION_CODE</columns>
+        <desc-columns></desc-columns>
+      </index>
+      <index id="149" parent="16" name="FK_MENUS_PARENTID">
+        <columns>PARENT_MENU_ID</columns>
+        <desc-columns></desc-columns>
+      </index>
+      <key id="150" parent="16" name="PRIMARY">
+        <columns>MENU_ID</columns>
+        <primary>1</primary>
+      </key>
+      <foreign-key id="151" parent="16" name="menus_ibfk_1">
+        <columns>PARENT_MENU_ID</columns>
+        <ref-key>PRIMARY</ref-key>
+        <cascade-update-rule>restrict</cascade-update-rule>
+        <cascade-delete-rule>restrict</cascade-delete-rule>
+      </foreign-key>
+      <column id="152" parent="17" name="NEWS_ID">
+        <comment>新闻ID</comment>
+        <mandatory>1</mandatory>
+        <data-type>int(11)</data-type>
+        <sequence-identity>1</sequence-identity>
+      </column>
+      <column id="153" parent="17" name="CONTENT">
+        <comment>新闻内容</comment>
+        <data-type>longtext</data-type>
+      </column>
+      <column id="154" parent="17" name="TITLE">
+        <comment>新闻标题</comment>
+        <data-type>varchar(255)</data-type>
+        <default-expression>&apos;&apos;</default-expression>
+      </column>
+      <column id="155" parent="17" name="CLICK_COUNT">
+        <comment>点击量</comment>
+        <data-type>int(11)</data-type>
+        <default-expression>&apos;0&apos;</default-expression>
+      </column>
+      <column id="156" parent="17" name="NEWS_STATE">
+        <comment>新闻状态|0-删除|1-正常</comment>
+        <data-type>int(11)</data-type>
+        <default-expression>&apos;0&apos;</default-expression>
+      </column>
+      <column id="157" parent="17" name="PUBLISH_TIME">
+        <comment>发布时间</comment>
+        <mandatory>1</mandatory>
+        <data-type>datetime</data-type>
+      </column>
+      <column id="158" parent="17" name="AUTHOR">
+        <comment>作者</comment>
+        <data-type>varchar(20)</data-type>
+      </column>
+      <column id="159" parent="17" name="NEWS_COLUMN_ID">
+        <comment>新闻栏目id</comment>
+        <data-type>int(11)</data-type>
+      </column>
+      <column id="160" parent="17" name="NEWS_TYPE_ID">
+        <comment>新闻类型id</comment>
+        <data-type>int(11)</data-type>
+      </column>
+      <column id="161" parent="17" name="COMMENT_COUNT">
+        <comment>评论数量</comment>
+        <data-type>int(11)</data-type>
+        <default-expression>&apos;0&apos;</default-expression>
+      </column>
+      <column id="162" parent="17" name="PRAISE_COUNT">
+        <comment>点赞数量</comment>
+        <data-type>int(11)</data-type>
+        <default-expression>&apos;0&apos;</default-expression>
+      </column>
+      <column id="163" parent="17" name="NEWS_IMG_ID">
+        <comment>图片id</comment>
+        <data-type>varchar(255)</data-type>
+      </column>
+      <column id="164" parent="17" name="RECOMMEND">
+        <comment>是否推荐(0表示不推荐1表示推荐)</comment>
+        <data-type>varchar(10)</data-type>
+      </column>
+      <column id="165" parent="17" name="TYPES">
+        <comment>0任务资讯1提现更新2经验杂谈3其它</comment>
+        <data-type>varchar(1)</data-type>
+      </column>
+      <index id="166" parent="17" name="FK_NEWS_TYPE_ID_NEWSTYPE_TYPE_ID">
+        <columns>NEWS_TYPE_ID</columns>
+        <desc-columns></desc-columns>
+      </index>
+      <key id="167" parent="17" name="PRIMARY">
+        <columns>NEWS_ID</columns>
+        <primary>1</primary>
+      </key>
+      <foreign-key id="168" parent="17" name="news_ibfk_1">
+        <columns>NEWS_TYPE_ID</columns>
+        <ref-key>~.news_type.PRIMARY</ref-key>
+        <cascade-update-rule>restrict</cascade-update-rule>
+        <cascade-delete-rule>restrict</cascade-delete-rule>
+      </foreign-key>
+      <column id="169" parent="18" name="NEWS_COLUMN_ID">
+        <comment>新闻栏目id</comment>
+        <mandatory>1</mandatory>
+        <data-type>int(11)</data-type>
+      </column>
+      <column id="170" parent="18" name="NEWS_COLUMN_NAME">
+        <comment>栏目名</comment>
+        <mandatory>1</mandatory>
+        <data-type>varchar(200)</data-type>
+        <default-expression>&apos;&apos;</default-expression>
+      </column>
+      <key id="171" parent="18" name="PRIMARY">
+        <columns>NEWS_COLUMN_ID</columns>
+        <primary>1</primary>
+      </key>
+      <column id="172" parent="19" name="NEWS_TYPE_ID">
+        <comment>新闻类别ID</comment>
+        <mandatory>1</mandatory>
+        <data-type>int(11)</data-type>
+        <sequence-identity>1</sequence-identity>
+      </column>
+      <column id="173" parent="19" name="NEWS_TYPE_NAME">
+        <comment>新闻类别名称</comment>
+        <mandatory>1</mandatory>
+        <data-type>varchar(200)</data-type>
+        <default-expression>&apos;&apos;</default-expression>
+      </column>
+      <column id="174" parent="19" name="NEWS_COLUMN_ID">
+        <comment>所属栏目ID</comment>
+        <mandatory>1</mandatory>
+        <data-type>int(11)</data-type>
+      </column>
+      <index id="175" parent="19" name="FK_NEWSTYPE_NEWSCOLUMNID">
+        <columns>NEWS_COLUMN_ID</columns>
+        <desc-columns></desc-columns>
+      </index>
+      <key id="176" parent="19" name="PRIMARY">
+        <columns>NEWS_TYPE_ID</columns>
+        <primary>1</primary>
+      </key>
+      <foreign-key id="177" parent="19" name="news_type_ibfk_1">
+        <columns>NEWS_COLUMN_ID</columns>
+        <ref-key>~.news_column.PRIMARY</ref-key>
+        <cascade-update-rule>restrict</cascade-update-rule>
+        <cascade-delete-rule>restrict</cascade-delete-rule>
+      </foreign-key>
+      <column id="178" parent="20" name="PUSH_MESSAGE_ID">
+        <mandatory>1</mandatory>
+        <data-type>varchar(32)</data-type>
+      </column>
+      <column id="179" parent="20" name="TITLE">
+        <comment>标题</comment>
+        <data-type>varchar(2000)</data-type>
+        <default-expression>&apos;&apos;</default-expression>
+      </column>
+      <column id="180" parent="20" name="CONTENT">
+        <comment>长标题</comment>
+        <data-type>varchar(2000)</data-type>
+        <default-expression>&apos;&apos;</default-expression>
+      </column>
+      <column id="181" parent="20" name="URL">
+        <comment>URL</comment>
+        <data-type>varchar(2000)</data-type>
+      </column>
+      <column id="182" parent="20" name="CONDITION_ID">
+        <comment>事件关联ID</comment>
+        <data-type>varchar(200)</data-type>
+      </column>
+      <column id="183" parent="20" name="MESSAGE_TYPE">
+        <comment>消息类型，0：事普通，1事件，链接</comment>
+        <data-type>int(2)</data-type>
+      </column>
+      <column id="184" parent="20" name="PUSH_DATE">
+        <comment>推送时间</comment>
+        <data-type>datetime</data-type>
+      </column>
+      <key id="185" parent="20" name="PRIMARY">
+        <columns>PUSH_MESSAGE_ID</columns>
+        <primary>1</primary>
+      </key>
+      <column id="186" parent="21" name="PUSH_SETTING_ID">
+        <mandatory>1</mandatory>
+        <data-type>int(11)</data-type>
+      </column>
+      <column id="187" parent="21" name="CUS_ID">
+        <comment>用户ID</comment>
+        <data-type>int(11)</data-type>
+      </column>
+      <column id="188" parent="21" name="EMAIL">
+        <comment>邮箱推送 0 否 1是</comment>
+        <data-type>int(255)</data-type>
+      </column>
+      <column id="189" parent="21" name="TELEPHONE">
+        <comment>手机推送 0 否 1是</comment>
+        <data-type>int(255)</data-type>
+      </column>
+      <column id="190" parent="21" name="WECHART">
+        <comment>微信推送 0 否 1是</comment>
+        <data-type>int(255)</data-type>
+      </column>
+      <column id="191" parent="21" name="APP">
+        <comment>APP推送 0 否 1是</comment>
+        <data-type>int(11)</data-type>
+      </column>
+      <key id="192" parent="21" name="PRIMARY">
+        <columns>PUSH_SETTING_ID</columns>
+        <primary>1</primary>
+      </key>
+      <column id="193" parent="22" name="QUOTE_RELATION_ID">
+        <mandatory>1</mandatory>
+        <data-type>varchar(255)</data-type>
+      </column>
+      <column id="194" parent="22" name="SOURCE_ID">
+        <comment>引用源id</comment>
+        <data-type>varchar(255)</data-type>
+      </column>
+      <column id="195" parent="22" name="SOURCE_TYPE">
+        <comment>引用源类型</comment>
+        <data-type>int(2)</data-type>
+      </column>
+      <column id="196" parent="22" name="QUOTE_SOURCE_ID">
+        <comment>引用资源id</comment>
+        <data-type>varchar(255)</data-type>
+      </column>
+      <column id="197" parent="22" name="QUOTE_SOURCE_NAME">
+        <data-type>varchar(255)</data-type>
+      </column>
+      <column id="198" parent="22" name="QUOTE_SOURCE_TYPE">
+        <data-type>int(2)</data-type>
+      </column>
+      <column id="199" parent="22" name="QUOTE_DATE">
+        <data-type>datetime</data-type>
+      </column>
+      <column id="200" parent="22" name="QUOTE_SOURCE_SUFFIX">
+        <comment>文件后缀，引用事件没有</comment>
+        <data-type>varchar(255)</data-type>
+      </column>
+      <key id="201" parent="22" name="PRIMARY">
+        <columns>QUOTE_RELATION_ID</columns>
+        <primary>1</primary>
+      </key>
+      <column id="202" parent="23" name="ROLE_ID">
+        <comment>角色ID</comment>
+        <mandatory>1</mandatory>
+        <data-type>int(11)</data-type>
+        <sequence-identity>1</sequence-identity>
+      </column>
+      <column id="203" parent="23" name="ROLE_NAME">
+        <comment>角色名</comment>
+        <mandatory>1</mandatory>
+        <data-type>varchar(255)</data-type>
+        <default-expression>&apos;&apos;</default-expression>
+      </column>
+      <column id="204" parent="23" name="ROLE_DESC">
+        <comment>角色描述</comment>
+        <data-type>varchar(200)</data-type>
+      </column>
+      <column id="205" parent="23" name="CREATE_DATE">
+        <comment>创建日期</comment>
+        <mandatory>1</mandatory>
+        <data-type>datetime</data-type>
+      </column>
+      <column id="206" parent="23" name="ROLE_CODE">
+        <comment>角色代码</comment>
+        <data-type>varchar(255)</data-type>
+      </column>
+      <key id="207" parent="23" name="PRIMARY">
+        <columns>ROLE_ID</columns>
+        <primary>1</primary>
+      </key>
+      <column id="208" parent="24" name="FILE_ID">
+        <comment>文件id</comment>
+        <mandatory>1</mandatory>
+        <data-type>varchar(255)</data-type>
+      </column>
+      <column id="209" parent="24" name="FILE_NAME">
+        <comment>文件名字</comment>
+        <mandatory>1</mandatory>
+        <data-type>varchar(255)</data-type>
+      </column>
+      <column id="210" parent="24" name="UPLOAD_TIME">
+        <comment>上传时间</comment>
+        <mandatory>1</mandatory>
+        <data-type>datetime</data-type>
+      </column>
+      <column id="211" parent="24" name="FILE_SUFFIX">
+        <comment>文件类型</comment>
+        <data-type>varchar(255)</data-type>
+      </column>
+      <key id="212" parent="24" name="PRIMARY">
+        <columns>FILE_ID</columns>
+        <primary>1</primary>
+      </key>
+      <column id="213" parent="25" name="USER_ID">
+        <comment>后台用户id</comment>
+        <mandatory>1</mandatory>
+        <data-type>int(11)</data-type>
+      </column>
+      <column id="214" parent="25" name="ROLE_ID">
+        <comment>角色</comment>
+        <mandatory>1</mandatory>
+        <data-type>int(11)</data-type>
+      </column>
+      <index id="215" parent="25" name="FK_USER_ROLE_ROLE_ID">
+        <columns>ROLE_ID</columns>
+        <desc-columns></desc-columns>
+      </index>
+      <index id="216" parent="25" name="FK_USER_ROLE_USER_ID">
+        <columns>USER_ID</columns>
+        <desc-columns></desc-columns>
+      </index>
+      <key id="217" parent="25" name="PRIMARY">
+        <columns>USER_ID
+ROLE_ID</columns>
+        <primary>1</primary>
+      </key>
+      <column id="218" parent="26" name="USER_ID">
+        <comment>用户ID</comment>
+        <mandatory>1</mandatory>
+        <data-type>int(11)</data-type>
+        <sequence-identity>1</sequence-identity>
+      </column>
+      <column id="219" parent="26" name="LOGIN_NAME">
+        <comment>登录账号</comment>
+        <mandatory>1</mandatory>
+        <data-type>varchar(50)</data-type>
+        <default-expression>&apos;&apos;</default-expression>
+      </column>
+      <column id="220" parent="26" name="PASSWORD">
+        <comment>密码</comment>
+        <mandatory>1</mandatory>
+        <data-type>varchar(50)</data-type>
+        <default-expression>&apos;&apos;</default-expression>
+      </column>
+      <column id="221" parent="26" name="REAL_NAME">
+        <comment>真实姓名</comment>
+        <data-type>varchar(50)</data-type>
+        <default-expression>&apos;&apos;</default-expression>
+      </column>
+      <column id="222" parent="26" name="ID_CARD_NO">
+        <comment>身份证号码</comment>
+        <data-type>varchar(20)</data-type>
+        <default-expression>&apos;&apos;</default-expression>
+      </column>
+      <column id="223" parent="26" name="MOBILE">
+        <comment>手机号码</comment>
+        <mandatory>1</mandatory>
+        <data-type>varchar(20)</data-type>
+        <default-expression>&apos;&apos;</default-expression>
+      </column>
+      <column id="224" parent="26" name="REGISTER_TIME">
+        <comment>注册时间</comment>
+        <data-type>datetime</data-type>
+      </column>
+      <column id="225" parent="26" name="LAST_LOGIN_TIME">
+        <comment>最后登录时间</comment>
+        <data-type>datetime</data-type>
+      </column>
+      <column id="226" parent="26" name="USER_STATE">
+        <comment>状态:0=有效1=冻结2=注销</comment>
+        <mandatory>1</mandatory>
+        <data-type>int(2)</data-type>
+      </column>
+      <index id="227" parent="26" name="ID_CARD_NO">
+        <columns>ID_CARD_NO</columns>
+        <desc-columns></desc-columns>
+        <unique>1</unique>
+      </index>
+      <index id="228" parent="26" name="LOGIN_NAME">
+        <columns>LOGIN_NAME</columns>
+        <desc-columns></desc-columns>
+        <unique>1</unique>
+      </index>
+      <index id="229" parent="26" name="MOBILE">
+        <columns>MOBILE</columns>
+        <desc-columns></desc-columns>
+        <unique>1</unique>
+      </index>
+      <key id="230" parent="26" name="ID_CARD_NO">
+        <columns>ID_CARD_NO</columns>
+        <underlying-index>ID_CARD_NO</underlying-index>
+      </key>
+      <key id="231" parent="26" name="LOGIN_NAME">
+        <columns>LOGIN_NAME</columns>
+        <underlying-index>LOGIN_NAME</underlying-index>
+      </key>
+      <key id="232" parent="26" name="MOBILE">
+        <columns>MOBILE</columns>
+        <underlying-index>MOBILE</underlying-index>
+      </key>
+      <key id="233" parent="26" name="PRIMARY">
+        <columns>USER_ID</columns>
+        <primary>1</primary>
+      </key>
+    </database-model>
+  </data-source>
+</component>

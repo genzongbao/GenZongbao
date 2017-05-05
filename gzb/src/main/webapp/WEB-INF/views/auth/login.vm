@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+    <title>[跟踪宝]你的目标跟踪助手</title>
+    <link rel="stylesheet" href="${request.getContextPath()}/css/common.css"/>
+    <link rel="stylesheet" href="${request.getContextPath()}/css/login.css"/>
+    <link rel="stylesheet" href="${request.getContextPath()}/css/weui.min.css" />
+     <script type="text/javascript" src="${request.getContextPath()}/js/login.js"></script>
+       <script type="text/javascript" src="${request.getContextPath()}/js/jquery-1.11.3.js"></script>
+		<script src="${request.getContextPath()}/js/jquery-weui.min.js"></script>
+        <script>
+	    	var sys = sys || {};
+	    	sys.contextPath = "${request.getContextPath()}";
+         	#set($isBingding=$session.getAttribute("isBingding"))
+	    	#if($isBingding)
+	    		#set($openIdResult=$session.getAttribute("openIdResult"))
+	    		#if(!$openIdResult)
+	    			$(function(){
+	    				alert("绑定账号失败，请刷新该页面");
+	    			})
+	    		#end
+	    	#end
+	    	function companyLoginChange(el){
+	    		$("#customerLogin_div").hide();
+	    		$(el).addClass("hoverChoose");
+	    		$(el).parent(".loginLable").siblings().children().removeClass("hoverChoose");
+	    		$("#companyLogin_div").show();
+	    	}
+	    	function customerLoginChange(el){
+	    		$("#customerLogin_div").show();
+	    		$(el).addClass("hoverChoose");
+	    		$(el).parent(".loginLable").siblings().children().removeClass("hoverChoose");
+	    		$("#companyLogin_div").hide();
+	    	}
+	    	function submitFormToBingding(){
+				$.ajax({
+					type: "POST",
+					url:sys.contextPath+"/auth/app-login?num="+Math.random(),
+					data:$('#form').serialize(),
+					dataType:"json",
+					success: function(data) {
+						if(data.result){
+							alert(data.msg);
+		                    closeWindow();
+		                    wx.closeWindow();
+						} else {
+							alert(data.msg)
+						}
+					}
+				});
+			}
+		</script>
+</head>
+<body>
+    <div id="login"></div>
+    <div class="login_bg">
+        <div id="logo">
+            <img src="${request.getContextPath()}/images/logo.png" alt=""/>
+        </div>
+        <table id="loginChoose">
+        	<tr>
+	        	<td id="customerLogin_a" class="loginLable"><a onclick="customerLoginChange(this);">个人登录</a></td>
+	        	<td id="companyLogin_a" class="loginLable"><a onclick="companyLoginChange(this);">企业登录</a></td>
+        	</tr>
+        </table>
+        <div id="customerLogin_div" class="customerLogin_div">
+	        <form id="form" action="">
+	            <div class="userName">
+	                <lable>用户昵称：</lable>
+	                <input type="text" name="cusPhone" placeholder="请输入用户名" pattern="[0-9A-Za-z]{11,11}" maxLength="11" required placeholder="13512345678"/>
+	            </div>
+	            <div class="passWord">
+	                <lable>密&nbsp;&nbsp;&nbsp;码：</lable>
+	                <input type="password" name="cusPassword" placeholder="请输入密码" pattern="[0-9A-Za-z]{6,25}" maxLength="25"  required/>
+	            </div>
+	           <table id="LinkChoose">
+	           
+		        	<tr>
+			        	<td id="NoAccountTest_a" class="loginLable"><a onclick="">无账号体验</a></td>
+			        	<td id="ForgetPwd_a" class="loginLable"><a href="forget-password">忘记密码</a></td>
+		        	</tr>
+		        </table>
+	            <button class="login_btn" 
+	            #if($isBingding)
+	            	onclick="submitFormToBingding();return false;"
+	            #else
+	            	onclick="submitForm();return false;"
+	            #end
+	            >登&nbsp;&nbsp;录</button>
+	            <button class="login_btn" style="margin-top: 20px" onclick="window.location='${request.getContextPath()}/auth/register';return false;">注&nbsp;&nbsp;册</button>
+	        </form>
+	        <div class="other_login">
+	            <div class="other"></div>
+	            <span>其他方式登录</span>
+	            <div class="other"></div>
+	        </div>
+	        <div class="other_choose">
+	            <a href="javascript:void(0);">
+	                <img src="${request.getContextPath()}/images/qq.png" alt=""/>
+	            </a>
+	            <a href="javascript:void(0);">
+	                <img src="${request.getContextPath()}/images/wx.png" alt=""/>
+	            </a>
+	            <a href="javascript:void(0);">
+	                <img src="${request.getContextPath()}/images/wb.png" alt=""/>
+	            </a>
+	        </div>
+        </div>
+        
+        <!-- 企业登录 -->
+        <div id="companyLogin_div" class="companyLogin_div">
+        <form id="form" action="">
+	            <div class="userName">
+	                <lable>企业邮箱：</lable>
+	                <input type="text" name="cusEmail" placeholder="请输入邮箱" pattern="^[a-zA-Z0-9_-]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$" required placeholder="***@company.com"/>
+	            </div>
+	            <div class="passWord">
+	                <lable>密&nbsp;&nbsp;&nbsp;&nbsp;码：</lable>
+	                <input type="password" name="cusEmailPassword" placeholder="请输入密码" pattern="[0-9A-Za-z]{6,25}" maxLength="25"  required/>
+	            </div>
+	            <div class="choose_box">
+	               <a href="forget-password">忘记密码  > > ></a>
+	            </div>
+	            <button class="login_btn" onclick="submitCompanyForm();return false;">企业登录</button>
+	            <button class="login_btn" style="margin-top: 20px" onclick="window.location='${request.getContextPath()}/auth/companyRegister';return false;">企业注册</button>
+	        </form>
+        
+        </div>
+    </div>
+    
+    <div id="toast" style="display: none;">
+	    <div class="weui_mask_transparent"></div>
+	    <div class="weui_toast">
+	        <i class="weui_icon_toast"></i>
+	        <p class="weui_toast_content">已完成</p>
+	    </div>
+	</div>
+</body>
+</html>

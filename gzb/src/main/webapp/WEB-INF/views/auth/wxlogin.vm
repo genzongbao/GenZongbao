@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport"
+          content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no"/>
+    <script type="text/javascript" src="${request.getContextPath()}/js/jquery.js"></script>
+    <script type="text/javascript" src="${request.getContextPath()}/js/ImgCode.js"></script>
+    <script type="text/javascript" src="${request.getContextPath()}/js/public.js"></script>
+    <script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
+    <link rel="stylesheet" type="text/css" href="${request.getContextPath()}/css/AppLogin.css"
+          media="all"/>
+    <link rel="stylesheet" type="text/css" href="${request.getContextPath()}/css/style.css" media="all"/>
+    <title>登陆</title>
+</head>
+<script type="text/javascript">
+var sys = sys || {};
+sys.contextPath = "${request.getContextPath()}";
+sys.basePath = "${request.getScheme()}://${request.getServerName()}:${request.getServerPort()}"+sys.contextPath+"/";
+#set($urls=$session.getAttribute("openIdResult"))
+
+    var index = 1;
+    $(function () {
+	    #if(!$urls)
+	    alert("获取信息失败！请重新授权");
+		#end
+        $("html").css({"width": $(window).width(), "height": $(window).height})
+        $("#top").css("width", $(window).width());
+        $("#phone").focus(function () {
+            var name = $(this);
+            if (name.val() == "请输入您的手机号码" || name.val() == "请输入您的电子邮箱") {
+                name.val("")
+            }
+        });
+        $("#phone").blur(
+            function () {
+                var name = $(this);
+                if (name.attr("id") == "phone"
+                    && (name.val() == "" || name.val() == null)) {
+                    name.val("请输入您的手机号码");
+                } else if (name.attr("id") == "email"
+                    && (name.val() == "" || name.val() == null)) {
+                    name.val("请输入您的电子邮箱");
+                }
+            });
+        $("#password").focus(function () {
+            var pass = $(this);
+            if (pass.val() == "请输入登陆密码（格式为数字+字母）") {
+                pass.val("");
+                pass.attr("type", "password");
+
+            }
+
+        });
+        $("#password").blur(function () {
+            var pass = $(this);
+            if (pass.val() == "" || null == pass.val()) {
+                pass.val("请输入登陆密码（格式为数字+字母）");
+                pass.attr("type", "text");
+
+            }
+
+        });
+        $("#person").click(function () {
+            $("#email").val("请输入您的手机号码");
+            $("#email").attr("id", "phone");
+        });
+        $("#company").click(function () {
+            $("#phone").val("请输入您的电子邮箱");
+            $("#phone").attr("id", "email");
+        });
+        /*$("#btn").click(function () {
+            if (index > 1) {
+                $.ImgCode();
+            } else {
+                login();
+            }
+        });*/
+        $("body").on("click", "#subCode", function () {
+            var code = $("#imgCode").val();
+            $.post("check/checkImgCode", {
+                "code": code
+            }, function (mes) {
+                var res = mes.result[0];
+                if (res.can) {
+                    login();
+                } else {
+                    alert("验证码错误");
+                    index++;
+                }
+            }, "json");
+            $("body .imgCode").remove();
+        });
+    })
+    
+    function submitForm(){
+		$.ajax({
+			type: "POST",
+			url:sys.contextPath+"/auth/wxlogin?num="+Math.random(),
+			data:$('#form').serialize(),
+			dataType:"json",
+			success: function(data) {
+				console.log(data);
+				if(data.result){
+					alert(data.msg);
+                    closeWindow();
+                    wx.closeWindow();
+				} else {
+					alert(data.msg)
+				}
+			}
+		});
+	}
+    function closeWindow() {
+        var timestamp;
+        var nonceStr;
+        var signature;
+        $.get("wiki/getJSTicket", function (data) {
+            timestamp = data.timestamp;
+            nonceStr = data.nonceStr;
+            signature = data.signature;
+        }, "json");
+        wx.config({
+            debug: false,
+            appId: 'wxc7e55232740f1077',
+            timestamp: timestamp,
+            nonceStr: nonceStr,
+            signature: signature,
+            jsApiList: [
+                'closeWindow',
+            ]
+        });
+        wx.error(function (res) {
+            alert(res.errMsg);
+        });
+    }
+</script>
+<body>
+<div>
+    <div id="top">
+        <div class="floatLeft" style="width: 100%">
+            <img src="${request.getContextPath()}/images/gzblogo.jpg" style="width: 100%;height: 181px">
+        </div>
+        <div class="clear"></div>
+        <div>
+            <ul>
+                <li id="person">个人</li>
+                <li id="company">企业</li>
+            </ul>
+        </div>
+        <div class="clear"></div>
+    </div>
+    <div class="login">
+        <form id="form">
+            <div id="name" class="log_form">
+                <div>
+                    <input id="phone" type="text" name="cusPhone" value="请输入您的手机号码">
+                </div>
+                <div>
+                    <span class="remind">※ 仅限中国大陆11位手机号。</span>
+                </div>
+            </div>
+            <div id="pass" class="log_form">
+                <div>
+                    <input id="password" name="cusPassword" type="text"
+                           value="请输入登陆密码（格式为数字+字母）">
+                </div>
+                <div>
+                    <span class="remind">※ 6~16位字符，必须是数字和字母（区分大小写）的组合。</span>
+                </div>
+            </div>
+            <div id="linked" class="log_form">
+                <div class="floatLeft linked">
+                    <span><a href="user/editpass.html">忘记密码?</a></span>
+                </div>
+                <div class="floatRight linked">
+                    <span>微信登陆</span>
+                </div>
+                <div class="clear"></div>
+            </div>
+            <div id="sub" class="log_form">
+                <div>
+                    <input id="btn" type="button" onclick="submitForm();return false" value="登陆" class="btn">
+                </div>
+                <div>
+                    <div class="goReg">
+                        <span><a href="regest.html">前往注册》</a></span>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<script>
+
+</script>
+</body>
+</html>

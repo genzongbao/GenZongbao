@@ -1,0 +1,122 @@
+##旧分页宏（后台使用）
+#macro(pagination $page $method)
+	<div class="pagination">
+		<form action="${request.getRequestURI()}" method="post">
+		#foreach($paramName in $request.getParameterNames())
+			#if($paramName != 'p')
+				#foreach($paramValue in $request.getParameterValues($paramName))
+				<input type="hidden" name="$paramName" value="$!{paramValue}"/>
+				#end
+			#end
+		#end
+		<input type="hidden" name="p" value="$!{page.page}">
+		<input type="hidden" name="view" value="$!{view}">
+		<ul>
+		  	<li class="disabled"><a href="javascript:void(0);">$!{page.page}/$!{page.totalPage}</a></li>
+		    <li#if($page.page == 1) class="active"#end><a href="javascript:void(0);" #if($page.page != 1)onclick="page(1, this);"#end>«</a></li>
+		    #if($page.page > 2)#set($p = $page.page - 2)
+		    <li><a href="javascript:void(0);" onclick="page($!p, this);">$p</a></li>
+		  	#end
+		    #if($page.page > 1)#set($p = $page.page - 1)
+		    <li><a href="javascript:void(0);" onclick="page($!p, this);">$p</a></li>
+		  	#end
+		    <li class="active"><a href="javascript:void(0)">$!{page.page}</a></li>
+		    #if($page.page < ${page.totalPage})#set($p = $page.page + 1)
+		    <li><a href="javascript:void(0);" onclick="page($!p, this);">$p</a></li>
+		  	#end
+		    #if($page.page + 1 < ${page.totalPage})#set($p = $page.page + 2)
+		    <li><a href="javascript:void(0);" onclick="page($!p, this);">$p</a></li>
+		  	#end
+		    <li#if($page.page == $page.totalPage) class="active"#end><a href="javascript:void(0);" #if($page.page != $page.totalPage)onclick="page($!{page.totalPage}, this);"#end>»</a></li>
+		</ul>
+		</form>
+	</div>
+#end
+
+##权限不足
+#macro(noPermission)data-toggle="modal" data-target="#permissionModal"#end
+
+##=====================
+##定义form表单字段是否必填，required:必填、nullable:非必填
+#macro(required)<span style="color:red">*</span> #end
+#macro(nullable)<span>&nbsp;</span> #end
+
+##====================
+##长字符串的省略
+#macro(substr $str $length)
+	#if($str != "" && '$str' != '' && '$str' != 'undefined')
+		#if($str.length() > $length)
+			$str.substring(0,$length)...
+		#else
+			$str
+		#end
+	#end
+#end
+
+##======================
+##人民币字符
+#macro(rmb)
+	<span style="color:#EE6A50">¥</span>
+#end
+
+##======================
+##截段字符串,长度超过规定值用...显示
+#macro(subation $str $length)
+	#if($str.length() > $length)
+		$str.substring(0,$length)...
+	#else
+		$str
+	#end
+#end
+
+##======================
+##个人空间数据统计时，在数字前加上￥符号，空则不加
+#macro(addrmb $money)
+	#if($money)
+		<span style="color:#EE6A50">¥</span> $money
+	#end
+#end
+
+##应用根路径的简写
+#macro(ctx)${request.getContextPath()}#end
+
+##从其他web服务器回调域名配置
+#macro(back_base)http://192.168.0.99:81#end
+
+
+#macro(emty)
+	<div class="pro_null">
+		<img src="#ctx/images/weixin/logo.png"/><br/>
+		<p>抱歉，暂时没有数据</p>
+	</div>
+#end
+
+#macro(submitType $types)
+	#if($types.indexOf("PICTURE") != "-1")
+		&nbsp;&nbsp;上传图片
+	#end
+	#if($types.indexOf("NAME") != "-1")
+		&nbsp;&nbsp;姓名
+	#end
+	#if($types.indexOf("ACCOUNT") != "-1")
+		&nbsp;&nbsp;任务账号
+	#end
+	#if($types.indexOf("PASSWORD") != "-1")
+		&nbsp;&nbsp;密码
+	#end
+	#if($types.indexOf("MOBILE") != "-1")
+		&nbsp;&nbsp;手机号
+	#end
+	#if($types.indexOf("IDCARD") != "-1")
+		&nbsp;&nbsp;身份证号
+	#end
+#end
+#macro(activeMenu $id)
+	#if($!targetId == $id)<img style="position: absolute;left: -2px;top: -1px;" src="${request.getContextPath()}/images/image/orange.png"/>#end
+#end
+#macro(activeColor $id)
+	#if($!targetId == $id) style="height:30px;border: 1px solid #fb9900;background-color: #fff;" #end
+#end
+#macro(gold)
+	<img src="${request.getContextPath()}/images/image/ico.png" />
+#end

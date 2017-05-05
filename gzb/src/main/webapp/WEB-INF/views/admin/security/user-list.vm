@@ -1,0 +1,152 @@
+<style>
+	.permission-table{display:none;}
+</style>
+<ul class="breadcrumb">
+    <li><a href="${request.getContextPath()}/admin/menu?menuId=AUTH">权限管理</a> <span class="divider">/</span></li>
+    <li class="active">用户管理</li>
+</ul>
+<div style="width:98%;margin:20px auto">
+	#if($alertMsg)
+	<div class="alert alert-$alertType">
+	    <button type="button" class="close" data-dismiss="alert">×</button>
+	    <strong>提示:</strong> $alertMsg!
+	</div>
+	#end
+	<div class="well" style="overflow: hidden;">
+		<form class="form-inline" action="user-list" method="POST" onsubmit="return valiTime()">
+			<table class="table search-table msg">
+				<tr>
+					<td class="right-td">姓名</td>
+					<td><input name="realName" type="text" style="width: 150px"
+						value="$!query.realName" /></td>
+					<td class="right-td">手机号</td>
+					<td><input name="mobile" type="text" style="width: 150px" value="$!query.mobile" />
+					</td>
+					<td class="right-td">注册日期</td>
+					<td colspan="3">
+						<div class="form-group">
+							<div class="input-append date form_date_start">
+								<input value="$!date.format('yyyy-MM-dd',$!query.minRegisterTime)" style="width: 90px" id="minRegisterTime" value="$!query.minRegisterTime" name="minRegisterTime" class="form-control span6" type="text" readonly> 
+								<span name="remove-time" class="add-on">&nbsp;<i class="icon-remove"></i></span>
+							</div>
+							<label for="minIssueDate">&nbsp; — &nbsp;</label>
+							<div class="input-append date form_date_start">
+								<input value="$!date.format('yyyy-MM-dd',$!query.maxRegisterTime)" style="width: 90px" id="maxRegisterTime" value="$!query.maxRegisterTime" name="maxRegisterTime" class="form-control span6"  type="text" readonly> 
+								<span name="remove-time" class="add-on">&nbsp;<i class="icon-remove"></i></span>
+							</div>
+						</div>
+					</td>
+				</tr>
+				<tr>
+					<td class="right-td">角色</td>
+					<td>
+						<select style="width: 164px;" name="roleName">
+							<option value="">全部</option>
+							#foreach($roles in $roleList)
+							<option value="$roles.roleName">$roles.roleName</option> 
+							#end
+						</select>
+					</td>
+					<td class="right-td">身份证</td>
+					<td><input name="idCardNo" type="text" style="width: 150px" value="$!query.idCardNo" /></td>
+					<td class="right-td">上次登录日期</td>
+					<td colspan="3">
+						<div class="form-group">
+							<div class="input-append date form_date_start">
+								<input value="$!date.format('yyyy-MM-dd',$!query.minLastLoginTime)" style="width: 90px" id="minLastLoginTime" value="$!query.minLastLoginTime" name="minLastLoginTime" class="form-control span6"  type="text" readonly /> 
+								<span name="remove-time" class="add-on">&nbsp;<i class="icon-remove"></i></span>
+							</div>
+							<label for="maxLastLoginTime">&nbsp; — &nbsp;</label>
+							<div class="input-append date form_date_start">
+								<input value="$!date.format('yyyy-MM-dd',$!query.maxLastLoginTime)" style="width: 90px" id="maxLastLoginTime" value="$!query.maxLastLoginTime" name="maxLastLoginTime" class="form-control span6" size="16" type="text" readonly /> 
+								<span name="remove-time" class="add-on">&nbsp;<i class="icon-remove"></i></span>
+							</div>
+						</div>
+					</td>
+				</tr>
+				<tr>
+					<td class="right-td">状态</td>
+					<td colspan="2">
+						<select name="userState" style="width: 164px;">
+							<option value="">全部</option>
+							<option value="VALID" #if($!query.userState=='VALID')selected="selected" #end>正常</option>
+							<option value="FREEZED" #if($!query.userState=='FREEZED')selected="selected" #end>冻结</option>
+							<option value="REMOVED" #if($!query.userState=='REMOVED')selected="selected" #end>注销</option>
+						</select>
+					</td>
+					<td colspan="3">
+						<button class="btn" type="button" onclick="updateUserModal()">
+							&nbsp;<i class="icon-user"></i> 添加用户
+						</button>
+					</td>
+					<td colspan="2">
+						<button class="btn" type="submit" style="margin-left:135px;">
+							&nbsp;<i class="icon-search"></i> 搜一下
+						</button>
+						<button id="clearbtn" class="btn" type="button">
+							&nbsp;<i class="icon-remove"></i> 清空
+						</button>
+					</td>
+			</table>
+		</form>
+	</div>
+	<div class="well" style="overflow: hidden;">
+	    <table class="table table-bordered table-hover table-striped">
+	      <thead>
+	        <tr>
+	          <th>姓名</th>
+	          <th style="width:150px">角色</th>
+	          <th>用户昵称</th>
+	          <th>手机号</th>
+	          <th>身份证</th>
+	          <th>注册时间</th>
+	          <th>上次登录日期</th>
+	          <th>状态</th>
+	          <th style="text-align: center">操作</th>
+	        </tr>
+	      </thead>
+	      <tbody>
+	      	#foreach($data in $page.data)
+	        <tr>
+	          <td>$!data.realName</td>
+	          <td>$!{data.roleName}</td>
+	          <td>$!data.loginName</td>
+	          <td>$!data.mobile</td>
+	          <td>$!data.idCardNo</td>
+	          <td>$!date.format("yyyy-MM-dd HH:mm:ss", $!data.registerTime)</td>
+	          <td>$!date.format("yyyy-MM-dd HH:mm:ss", $!data.lastLoginTime)</td>
+	          <td>
+	          	#if($data.userState == "VALID")
+	          		<span class="label label-success">$data.userState.title()</span>
+	          	#elseif($data.userState == "FREEZED")
+	          		<span class="label label-info">$data.userState.title()</span>
+	          	#else
+	          		<span class="label">$data.userState.title()</span>
+	          	#end
+	          </td>
+	          <td style="text-align: center">
+		          #if($!loginUser.userId != $!data.userId)
+		          	#if($data.userState == "VALID")
+		          		<a href="javascript:void(0)" onclick="editPermissionShow('$data.userId','$!{data.roles}')" title="分配角色">&nbsp;<i class="icon-share"></i></a>
+		          		<a href="javascript:void(0)" onclick="editState('$data.userId','FREEZED')" title="冻结">&nbsp;<i class="icon-asterisk"></i></a>
+		          		<a style="color:red" href="javascript:void(0)" onclick="editState('$data.userId','REMOVED')"  title="注销">&nbsp;<i class="icon-off"></i></a>
+		          	#elseif($data.userState == "FREEZED")
+		          		<a style="color:red" href="javascript:void(0)" onclick="editState('$data.userId','VALID')" title="解冻">&nbsp;<i class="icon-fire"></i></a>
+		              	<a style="color:red" href="javascript:void(0)" onclick="editState('$data.userId','REMOVED')" title="注销">&nbsp;<i class="icon-off"></i></a>
+		          	#elseif($data.userState == "REMOVED")
+		          		<a style="color:green" href="javascript:void(0)" onclick="recovery('$data.userId','VALID')"  title="恢复">&nbsp;<i class="icon-refresh"></i></a>
+		          	#end
+		          #else
+		          #end
+	          </td>
+	        </tr>
+	        #end
+	      </tbody>
+	    </table>
+	</div>
+</div>
+#parse("admin/security/user-modal.vm")
+#if($page.totalSize > 0) 
+	#pagination($page) 
+#end
+<script type="text/javascript" src="${request.contextPath}/js/user-list.js"></script>

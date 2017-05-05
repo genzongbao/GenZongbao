@@ -1,0 +1,183 @@
+<script>
+	intArray = [ "cusPhone" ];
+	dateArray = [ "minCusRegTime", "maxCusRegTime", "minCusLastLogTime", "maxCusLastLogTime" ];
+	//修改状态
+	function updateCusState(cusId, state) {
+		var msg;
+		if (state == 'NORMAL') {
+			msg = "确定解冻吗？";
+		} else {
+			msg = "确定冻结吗？";
+		}
+		if (confirm(msg)) {
+			window.location.href = "update-cus-state?cusId=" + cusId
+					+ "&state=" + state;
+		}
+	}
+</script>
+<ul class="breadcrumb">
+	<li>
+		<a href="${request.getContextPath()}/admin/menu?menuId=CUSTOMER">客户管理</a>
+		<span class="divider">/</span>
+	</li>
+	<li class="active">客户查询</li>
+</ul>
+<div style="width: 98%; margin: 20px auto">
+	#if($alertMsg)
+	<div class="alert alert-$alertType">
+		<button type="button" class="close" data-dismiss="alert">×</button>
+		<strong>提示:</strong> $alertMsg!
+	</div>
+	#end
+	<div class="well">
+		<form class="form-inline" action="customer-list" method="POST">
+			<table class="table search-table">
+				<tr>
+					<td class="right-td">客户昵称</td>
+					<td class="form-group">
+						<div class="form-group">
+							<input name="cusLogName" type="text" style="width: 150px"
+								value="$!query.cusLogName" />
+						</div>
+					</td>
+					<td class="right-td">真实姓名</td>
+					<td>
+						<div class="form-group">
+							<input name="cusName" type="text" style="width: 150px" value="$!query.cusName" />
+						</div>
+					</td>
+					<td class="right-td">注册日期</td>
+					<td colspan="2">
+						<div class="form-group">
+							<div class="input-append date form_date_start">
+								<input value="$!date.format("yyyy-MM-dd",$!query.minCusRegTime)" style="width: 90px" id="minCusRegTime" value="$!query.minCusRegTime"
+									name="minCusRegTime" class="form-control span6" size="16" type="text" readonly>
+									<span name="remove-time" class="add-on">&nbsp;<i class="icon-remove"></i></span>
+							</div>
+							<label for="minIssueDate">&nbsp; — &nbsp;</label>
+							<div class="input-append date form_date_start">
+								<input value="$!date.format("yyyy-MM-dd",$!query.maxCusRegTime)" style="width: 90px" id="maxCusRegTime" value="$!query.maxCusRegTime"
+									name="maxCusRegTime" class="form-control span6" size="16" type="text" readonly>
+									<span name="remove-time" class="add-on">&nbsp;<i class="icon-remove"></i></span>
+							</div>
+						</div>
+					</td>
+				</tr>
+				<tr>
+					<td class="right-td">电话号码</td>
+					<td>
+						<div class="form-group">
+							<input name="cusPhone" type="text" style="width: 150px"
+								value="$!query.cusPhone" />
+						</div>
+					</td>
+					<td class="right-td">身份证号</td>
+					<td>
+						<div class="form-group">
+							<input name="cusIdCard" type="text" style="width: 150px" value="$!query.cusIdCard" />
+						</div>
+					</td>
+					<td class="right-td">登录日期</td>
+					<td colspan="2">
+						<div class="form-group">
+							<div class="input-append date form_date_start">
+								<input value="$!date.format("yyyy-MM-dd",$!query.minCusLastLogTime)" style="width: 90px" id="minCusLastLogTime" value="$!query.minCusLastLogTime"
+									name="minCusLastLogTime" class="form-control span6" size="16" type="text" readonly>
+									<span name="remove-time" class="add-on">&nbsp;<i class="icon-remove"></i></span>
+							</div>
+							<label for="minIssueDate">&nbsp; — &nbsp;</label>
+							<div class="input-append date form_date_start">
+								<input value="$!date.format("yyyy-MM-dd",$!query.maxCusLastLogTime)" style="width: 90px" id="maxCusLastLogTime" value="$!query.maxCusLastLogTime"
+									name="maxCusLastLogTime" class="form-control span6" size="16" type="text" readonly>
+									<span name="remove-time" class="add-on">&nbsp;<i class="icon-remove"></i></span>
+							</div>
+						</div>
+					</td>
+				</tr>
+				<tr>
+					<td class="right-td">电子邮箱</td>
+					<td>
+						<input name="cusEmail" type="text" style="width: 150px" value="$!query.cusEmail" />
+					</td>
+					<td class="right-td">账户状态</td>
+					<td>
+						<select name="cusState" style="width: 164px; text-align: center;">
+							<option value="">全部</option>
+							<option value="NOT_ACTIVE" #if($query.cusState=='NOT_ACTIVE')selected="selected" #end>未激活</option>
+							<option value="NORMAL" #if($query.cusState=='NORMAL')selected="selected" #end>正常</option>
+							<option value="LOCKED" #if($query.cusState=='LOCKED')selected="selected" #end>冻结</option>
+							<option value="REMOVED" #if($query.cusState=='REMOVED')selected="selected" #end>冻结</option>
+						</select>
+					</td>
+					<td></td>
+					<td>
+						<button class="btn" type="submit" style="margin-left: 125px;">
+							&nbsp;<i class="icon-search"></i> 搜一下
+						</button>&nbsp;&nbsp;
+						<button id="clearbtn" class="btn" type="button">
+							&nbsp;<i class="icon-remove"></i> 清空
+						</button>
+					</td>
+				</tr>
+			</table>
+		</form>
+	</div>
+	<div class="well" style="min-height: 400px">
+		<table class="table table-bordered table-hover">
+			<thead>
+				<tr>
+					<th>客户昵称</th>
+					<th>真实姓名</th>
+					<th style="text-align: center">电话号码</th>
+					<th style="text-align: center">身份证号</th>
+					<th style="text-align: center">电子邮箱</th>
+					<th style="text-align: center">注册日期</th>
+					<th style="text-align: center">最后登录时间</th>
+					<th style="text-align: center">状 态</th>
+					<th style="text-align: center">操作</th>
+				</tr>
+			</thead>
+			<tbody>
+				#foreach($data in $page.data)
+				<tr>
+					<td><p title="$!data.cusLogName">#substr($!data.cusLogName,10)</p></td>
+					<td>$!data.cusName</td>
+					<td>$!data.cusPhone</td>
+					<td>$!data.cusIdcard</td>
+					<td>$!data.cusEmail</td> 
+					<td style="text-align: center">$!date.format("yyyy-MM-dd",${data.cusRegDatetime})</td>
+					<td style="text-align: center">$!date.format("yyyy-MM-dd HH:mm:ss",${data.cusLastLogDatetime})</td>
+					<td style="text-align: center">
+						#if($dict.CustomerState[$data.cusState] == 'NORMAL') 
+							<span class="label label-success">$dict.CustomerState[$data.cusState].title()</span>
+						#elseif($dict.CustomerState[$data.cusState] == 'NOT_ACTIVE')	
+							 <span class="label label-success">正常</span>
+						#else 
+							<span class="label label-warning">$dict.CustomerState[$data.cusState].title()</span> 
+						#end
+					</td>
+					<td style="text-align: center">
+							<a #if($shiro.hasPermission("Customer:detail")) href="customer-base-info?cusId=$!data.cusId" #else #noPermission #end  title="查看">
+								&nbsp;<i class="icon-eye-open"></i>
+							</a> 
+						#if($dict.CustomerState[$!{data.cusState}] == 'NOT_ACTIVE')
+						<a #if($shiro.hasPermission("Customer:freeze")) href="javascript:void(0)" onclick="updateCusState('$!data.cusId','LOCKED')" #else #noPermission #end  title="冻结">
+								&nbsp;<i class="icon-asterisk"></i>
+							</a> 
+						#elseif($dict.CustomerState[$!{data.cusState}] == 'NORMAL') 
+							<a #if($shiro.hasPermission("Customer:freeze")) href="javascript:void(0)" onclick="updateCusState('$!data.cusId','LOCKED')" #else #noPermission #end  title="冻结">
+								&nbsp;<i class="icon-asterisk"></i>
+							</a> 
+						#elseif($dict.CustomerState[$!{data.cusState}] == 'LOCKED')
+							<a style="color: red" #if($shiro.hasPermission("Customer:thaw")) href="javascript:void(0)" onclick="updateCusState('$!data.cusId','NORMAL')" #else #noPermission #end  title="解冻">
+								&nbsp;<i class="icon-fire"></i>
+							</a> 
+						#end
+					</td>
+				</tr>
+				#end
+			</tbody>
+		</table>
+		#if($page.totalSize > 0) #pagination($page) #end
+	</div>
+</div>

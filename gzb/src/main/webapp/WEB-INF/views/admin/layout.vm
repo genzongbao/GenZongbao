@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="zh_CN">
+  <head>
+    <meta charset="utf-8">
+    <title>跟踪宝后台管理系统</title>
+    <meta content="IE=edge,chrome=1" http-equiv="X-UA-Compatible">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <meta name="sogou_site_verification" content="pEczcNNJ0g"/>
+	<!-- 配置浏览器不缓存 -->
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=8">
+	<meta http-equiv="Expires" content="0">
+	<meta http-equiv="Pragma" content="no-cache">
+	<meta http-equiv="Cache-control" content="no-cache">
+	<meta http-equiv="Cache" content="no-cache">
+    <link rel="stylesheet" type="text/css" href="${request.getContextPath()}/lib/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="${request.getContextPath()}/lib/bootstrap/css/bootstrap-bigicon.css">
+    <link rel="stylesheet" type="text/css" href="${request.getContextPath()}/css/admin/theme.css">
+    <link rel="stylesheet" type="text/css" href="${request.getContextPath()}/lib/font-awesome/css/font-awesome.css">
+    <link rel="stylesheet" type="text/css" href="${request.getContextPath()}/lib/bootstrap/css/bootstrap-datepicker.css">
+    <link rel="stylesheet" type="text/css" href="${request.getContextPath()}/lib/bootstrap/css/bootstrap-datetimepicker.css">
+	<link rel="stylesheet" type="text/css" href="${request.getContextPath()}/lib/webuploader/webuploader.css">
+	<link rel="stylesheet" type="text/css" href="${request.getContextPath()}/lib/bootstrap/css/bootstrap-bigicon.css">
+    <link rel="stylesheet" type="text/css" href="${request.getContextPath()}/css/common.css">
+    
+    <script type="text/javascript" src="${request.getContextPath()}/js/jquery-1.11.3.js"></script>
+	<script type="text/javascript" src="${request.getContextPath()}/lib/bootstrap/js/bootstrap.min.js"></script>
+	<script type="text/javascript" src="${request.getContextPath()}/lib/bootstrap/js/bootstrap-datepicker.js"></script>
+	<script type="text/javascript" src="${request.getContextPath()}/lib/bootstrap/js/bootstrap-datetimepicker.js"></script>
+	<script type="text/javascript" src="${request.getContextPath()}/lib/bootstrap/js/bootstrap-datetimepicker.zh-CN.js"></script>
+	<script type="text/javascript" src="${request.getContextPath()}/lib/webuploader/webuploader.js"></script>
+	<script type="text/javascript" src="${request.getContextPath()}/lib/jquery/ajaxfileupload.js"></script>
+	<script type="text/javascript" src="${request.getContextPath()}/lib/jquery/jquery.validate.js"></script>
+	<script type="text/javascript" src="${request.getContextPath()}/lib/jquery/jquery.validate.msg.js"></script>
+	<script type="text/javascript">window.CONTEXT_PATH='$!{request.getContextPath()}';</script>
+	<script type="text/javascript" src="${request.getContextPath()}/lib/pagination.js"></script>
+    <script>
+		//公用获取项目空间的代码
+    	var sys = sys || {};
+    	sys.contextPath = "${request.getContextPath()}";
+	</script>
+  </head>
+  <body>
+  <div class="container" style="width:100%;min-width:1300px;">
+    <div class="navbar fixed-head">
+        <div class="navbar-inner">
+            <ul class="nav pull-right">
+            	#foreach($menu in ${menus.topList})
+	                <li#if($menus.current.parentMenuId == $menu.menuId) class="active"#end>
+	                	<a href="${request.getContextPath()}/admin/menu?menuId=${menu.menuId}" class="hidden-phone visible-tablet visible-desktop" role="button">$menu.menuName</a>
+	                </li>
+				#end
+                <li id="fat-menu" class="dropdown">
+                    <a tabindex="-1" href="${request.getContextPath()}/admin/logout">退出</a>
+                </li>
+            </ul>
+            <a class="brand" href="javascript:;" target="_blank"><span class="first">跟踪宝</span></a><span class="second" style="line-height:40px;font-size:16px;height:40px">后台管理系统</span>
+        </div>
+    </div>
+    <div class="sidebar-nav fixed-menu">
+        <span class="nav-header">&nbsp;<i class="icon-dashboard"></i>$!{menus.currentTop.menuName}</span>
+        <ul id="dashboard-menu" class="nav nav-list in">
+        	#foreach($menu in $menus.submenuList)
+            	<li#if($menus.current.menuId == $menu.menuId) class="active"#end>
+            		<a href="${request.getContextPath()}/admin/menu?menuId=$!{menu.menuId}">$!{menu.menuName}</a>
+            		  	<ul id="dashboard-menu" class="nav nav-list in">
+		            		#foreach($men in $menus.subminList)
+		            	  		#if($menu.menuId == $men.parentMenuId)
+				           			<li#if($menuIds == $men.menuId) class="active"#end>
+				             		<a href="${request.getContextPath()}/admin/menu?menuId=$!{men.menuId}">$!{men.menuName}</a>
+				           		</li>
+				          	#end
+	            		#end
+            		 </ul>
+            	</li>
+            #end
+        </ul>
+    </div>
+    <div class="content fixed-content" >
+        #parse($contentView)
+        <!-- 
+        <div class="container-fluid">
+            <div class="row-fluid">
+                <footer>
+                    <hr>
+                    <p class="pull-right"></p>
+                    <p>&copy; 2015 <a href="javascript:;" title="跟踪宝" target="_blank">跟踪宝</a></p>
+                </footer>
+            </div>
+        </div>
+        -->
+    </div>
+   </div>
+  </body>
+</html>

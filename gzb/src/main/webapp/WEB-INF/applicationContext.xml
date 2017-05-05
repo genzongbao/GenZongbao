@@ -1,0 +1,220 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:aop="http://www.springframework.org/schema/aop" 
+    xmlns:context="http://www.springframework.org/schema/context"
+    xmlns:mvc="http://www.springframework.org/schema/mvc" 
+    xmlns:tx="http://www.springframework.org/schema/tx"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:task="http://www.springframework.org/schema/task"
+    xsi:schemaLocation="http://www.springframework.org/schema/aop   
+        http://www.springframework.org/schema/aop/spring-aop-4.1.xsd   
+        http://www.springframework.org/schema/beans   
+        http://www.springframework.org/schema/beans/spring-beans-4.1.xsd   
+        http://www.springframework.org/schema/context   
+        http://www.springframework.org/schema/context/spring-context-4.1.xsd   
+        http://www.springframework.org/schema/mvc   
+        http://www.springframework.org/schema/mvc/spring-mvc-4.1.xsd   
+        http://www.springframework.org/schema/tx   
+        http://www.springframework.org/schema/tx/spring-tx-4.1.xsd 
+        http://www.springframework.org/schema/task    
+        http://www.springframework.org/schema/task/spring-task-4.1.xsd" >
+    <!-- spring mvc 包扫描 注解驱动 -->
+    
+	<context:component-scan base-package="ydh" /> 
+    <mvc:annotation-driven />
+    
+    <task:executor id="executor" pool-size="3" />
+	<task:scheduler id="scheduler" pool-size="3" />
+	<task:annotation-driven executor="executor" scheduler="scheduler" />
+	
+	<!-- 对静态资源文件的访问 -->
+	 <mvc:resources mapping="/uploadFile/**" location="/uploadFile/" cache-period="31556926" />
+    <mvc:resources mapping="/images/**" location="/images/" cache-period="31556926" />
+    <mvc:resources mapping="/js/**" location="/js/" cache-period="31556926" />
+    <mvc:resources mapping="/css/**" location="/css/" cache-period="31556926" />
+    <mvc:resources mapping="/lib/**" location="/lib/" cache-period="31556926" />
+    <mvc:resources mapping="/html/**" location="/html/" cache-period="31556926" />
+    <!-- 数据源配置 -->
+    <bean id="dataSource" class="org.springframework.jndi.JndiObjectFactoryBean">
+		<property name="jndiName" value="java:comp/env/jdbc/gzb"/>
+	</bean>
+	<bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+        <property name="dataSource" ref="dataSource" />
+    </bean>
+	<bean id="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate">
+		<constructor-arg ref="dataSource"/>
+	</bean>
+	<bean id="queryFactory" class="ydh.cicada.query.factory.MysqlQueryFactory"/>
+	<bean id="jdbcDao" class="ydh.cicada.dao.JdbcDao">
+		<constructor-arg ref="jdbcTemplate"/>
+		<constructor-arg ref="queryFactory"/>
+	</bean>
+	<tx:annotation-driven proxy-target-class="true"/>
+	
+    <bean id="velocityConfigurer"  
+        class="org.springframework.web.servlet.view.velocity.VelocityConfigurer">  
+        <property name="resourceLoaderPath"><value>/WEB-INF/views/</value></property> 
+        <property name="velocityProperties">  
+            <props>
+                <prop key="input.encoding">UTF-8</prop>  
+                <prop key="output.encoding">UTF-8</prop>  
+                <prop key="contentType">text/html;charset=UTF-8</prop>
+				<prop key="velocimacro.library">macrolib.vm</prop>
+			</props>  
+        </property>
+    </bean>
+    
+    
+    
+    <!-- 视图解析器 手机页面（微信）解析器 -->
+    <bean class="ydh.mvc.SuffixViewResolver">
+    	<property name="suffix" value="m"/>
+    	<property name="order" value="1"/>
+    	<property name="viewResolver">
+    		<bean class="org.springframework.web.servlet.view.velocity.VelocityViewResolver">
+				<property name="prefix">
+					<value>/mobile/</value>
+				</property>
+				<property name="suffix">
+					<value>.vm</value>
+				</property>
+				<property name="exposeRequestAttributes">
+					<value>true</value>
+				</property>
+				<property name="exposeSessionAttributes">
+					<value>true</value>
+				</property>
+				<property name="contentType">
+					<value>text/html;charset=UTF-8</value>
+				</property>
+				<property name="toolboxConfigLocation">
+					<value>/WEB-INF/toolbox.xml</value>
+				</property>
+			</bean>
+    	</property>
+    </bean>
+    <!-- 视图解析器 json解析器 -->
+    <bean class="ydh.mvc.SuffixViewResolver">
+    	<property name="suffix" value="json"/>
+    	<property name="order" value="2"/>
+    	<property name="view">
+    		<bean class="org.springframework.web.servlet.view.json.MappingJackson2JsonView">
+              	<property name="contentType"><value>application/json</value></property>
+            </bean>
+    	</property>
+    </bean>
+    <!-- 视图解析器 默认解析器 -->
+    <bean class="org.springframework.web.servlet.view.ContentNegotiatingViewResolver">
+    	<property name="order" value="1"/>
+        <property name="defaultContentType" value="text/html" />
+        <property name="favorParameter" value="false" />
+        <property name="viewResolvers">
+            <list>
+			    <bean class="org.springframework.web.servlet.view.velocity.VelocityViewResolver">
+			        <property name="suffix"><value>.vm</value></property>  
+			        <property name="exposeRequestAttributes"><value>true</value></property>  
+			        <property name="exposeSessionAttributes"><value>true</value></property>
+			        <property name="contentType"><value>text/html;charset=UTF-8</value></property>  
+					<property name="toolboxConfigLocation"><value>/WEB-INF/toolbox.xml</value></property>
+			    </bean>
+            </list>
+        </property>
+        <property name="defaultViews">
+            <list>
+            	<!-- json view -->
+                <bean class="org.springframework.web.servlet.view.json.MappingJackson2JsonView">
+                	<property name="contentType"><value>text/plain</value></property>
+                </bean>
+            </list>
+        </property>
+    </bean>
+    
+    <!-- 文件上传解析器 -->
+    <bean id="multipartResolver"
+        class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+        <!-- one of the properties available; the maximum file size in bytes -->
+        <property name="defaultEncoding" value="UTF-8" />
+        <property name="maxUploadSize" value="50000000"/>
+    </bean>
+    
+    <!-- 总错误处理 -->
+    <bean id="exceptionResolver" class="ydh.mvc.ex.ExceptionResolver"/>
+    
+    <!-- 数据字典 -->
+    <bean id="dictContext" class="ydh.cicada.dict.DictContext">
+    	<property name="packagesToScan">
+            <value>ydh.**.dict</value>
+        </property>
+    </bean>
+    
+    <!-- 数据字典 -->
+    <bean id="permManager" class="ydh.base.perm.PermManager">
+    	<property name="packagesToScan">
+            <value>ydh.**.perm</value>
+        </property>
+    </bean>
+	<bean id="sessionDAO" class="org.apache.shiro.session.mgt.eis.MemorySessionDAO"/>
+	<bean id="sessionManager" class="org.apache.shiro.web.session.mgt.DefaultWebSessionManager">
+		<property name="sessionDAO" ref="sessionDAO"/>
+	</bean>
+    <!-- Shiro 配置 -->
+    <bean id="securityManager" class="org.apache.shiro.web.mgt.DefaultWebSecurityManager">
+    	<property name="realm">
+			<bean id="userZoneRealm" class="ydh.auth.UserZoneRealm" />
+    	</property>
+    	<property name="sessionManager" ref="sessionManager" />
+    </bean>
+    <!-- Shiro Filter -->
+    <bean id="shiroFilter" class="org.apache.shiro.spring.web.ShiroFilterFactoryBean">
+        <property name="securityManager" ref="securityManager" />
+        <property name="loginUrl" value="/auth/login" />
+        <property name="unauthorizedUrl" value="/base/difined" />
+        <property name="filters">  
+	        <map>  
+	            <entry key="customer">
+	            	<bean class="ydh.auth.UserZoneFilter">
+				    	<property name="sessionKey" value="loginCustomer"/>
+	            		<property name="loginUrl" value="/base/reLogin"/>
+	            	</bean>
+	            </entry>
+	            <entry key="userPass">
+	            	<bean class="ydh.auth.UserPassLoginFilter">
+	            		<property name="loginUrl" value="/auth/login"/>
+	            	</bean>
+	            </entry>
+	        </map>
+	    </property>
+        <property name="filterChainDefinitions">
+            <value>
+			  /event/** = customer
+         	/event*/** = customer
+         	/eventTag/** = customer
+            /** = anon
+            </value>
+        </property>
+    </bean>
+    
+    <!-- 开启Shiro注解的Spring配置方式的beans。在lifecycleBeanPostProcessor之后运行 -->
+    <bean class="org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator"
+        	depends-on="lifecycleBeanPostProcessor">
+        <property name="proxyTargetClass" value="true"/>
+    </bean>
+    <bean class="org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor">
+        <property name="securityManager" ref="securityManager" />
+    </bean>
+    
+    <bean id="lifecycleBeanPostProcessor" class="org.apache.shiro.spring.LifecycleBeanPostProcessor" />
+	
+	
+	<!--配置拦截器, 多个拦截器,顺序执行 -->  
+	<mvc:interceptors>    
+	    <mvc:interceptor>    
+	        <!-- 匹配的是url路径， 如果不配置或/**,将拦截所有的Controller -->  
+	        <mvc:mapping path="/**" />  
+			<mvc:exclude-mapping path="/auth/login"/>
+				        
+	        <bean class="ydh.listener.interceptor.CommonInterceptor"></bean>    
+	    </mvc:interceptor>  
+	    <!-- 当设置多个拦截器时，先按顺序调用preHandle方法，然后逆序调用每个拦截器的postHandle和afterCompletion方法 -->  
+	</mvc:interceptors> 
+</beans>

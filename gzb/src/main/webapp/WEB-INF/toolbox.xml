@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<toolbox>
+	<tool>
+		<key>date</key>
+		<scope>application</scope>
+		<class>org.apache.velocity.tools.generic.DateTool</class>
+		<parameter name="format" value="yyyy-MM-dd"/>
+	</tool>
+	<tool>
+		<key>shiro</key>
+		<scope>application</scope>
+		<class>ydh.mvc.velocity.ShiroVelocityTool</class>
+	</tool>
+	<tool>
+		<key>number</key>
+		<scope>application</scope>
+		<class>org.apache.velocity.tools.generic.NumberTool</class>
+	</tool>
+	<tool>
+		<key>math</key>
+    	<scope>application</scope>
+    	<class>org.apache.velocity.tools.generic.MathTool</class>
+	</tool>
+	
+	<!-- 货币格式 -->
+	<tool>
+		<key>vnumber</key>
+    	<scope>application</scope>
+    	<class>ydh.mvc.velocity.VNumber</class>
+	</tool>
+</toolbox>

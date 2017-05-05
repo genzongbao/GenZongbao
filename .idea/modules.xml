@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/.idea/GenZongBao.iml" filepath="$PROJECT_DIR$/.idea/GenZongBao.iml" />
+      <module fileurl="file://$PROJECT_DIR$/admin/admin.iml" filepath="$PROJECT_DIR$/admin/admin.iml" />
+      <module fileurl="file://$PROJECT_DIR$/base/base.iml" filepath="$PROJECT_DIR$/base/base.iml" />
+      <module fileurl="file://$PROJECT_DIR$/cicada/cicada.iml" filepath="$PROJECT_DIR$/cicada/cicada.iml" />
+      <module fileurl="file://$PROJECT_DIR$/config/config.iml" filepath="$PROJECT_DIR$/config/config.iml" />
+      <module fileurl="file://$PROJECT_DIR$/customer/customer.iml" filepath="$PROJECT_DIR$/customer/customer.iml" />
+      <module fileurl="file://$PROJECT_DIR$/event/event.iml" filepath="$PROJECT_DIR$/event/event.iml" />
+      <module fileurl="file://$PROJECT_DIR$/gzb/gzb.iml" filepath="$PROJECT_DIR$/gzb/gzb.iml" />
+      <module fileurl="file://$PROJECT_DIR$/message/message.iml" filepath="$PROJECT_DIR$/message/message.iml" />
+      <module fileurl="file://$PROJECT_DIR$/news/news.iml" filepath="$PROJECT_DIR$/news/news.iml" />
+      <module fileurl="file://$PROJECT_DIR$/operatelog/operatelog.iml" filepath="$PROJECT_DIR$/operatelog/operatelog.iml" />
+      <module fileurl="file://$PROJECT_DIR$/push/push.iml" filepath="$PROJECT_DIR$/push/push.iml" />
+      <module fileurl="file://$PROJECT_DIR$/upload/upload.iml" filepath="$PROJECT_DIR$/upload/upload.iml" />
+      <module fileurl="file://$PROJECT_DIR$/user/user.iml" filepath="$PROJECT_DIR$/user/user.iml" />
+      <module fileurl="file://$PROJECT_DIR$/weixin/weixin.iml" filepath="$PROJECT_DIR$/weixin/weixin.iml" />
+    </modules>
+  </component>
+</project>

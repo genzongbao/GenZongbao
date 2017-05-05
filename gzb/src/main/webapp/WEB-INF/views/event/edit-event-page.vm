@@ -1,0 +1,355 @@
+<style>
+body{font-size:1.5em;background-color:#e5e5e5;}
+.table{
+	width:100%;height:100%;
+}
+.table tr{
+	height:3em;background-color:#ffffff;
+}
+.table tr td div{
+	width:100%;
+}
+.text{
+	width:99%;height:100%;
+	border-left:0em;border-top:0em;border-right:0em;border-bottom:1.5em;font-size:1em;
+}
+.title{
+text-align:center;line-height:1em;background-color:#ffffff;
+}
+img{height:5em;width:100%}
+</style>
+<form id="form">
+	<table class="table">
+		<input name="eventTagId" type="hidden" value="$!event.eventTagId" />
+		<input name="eventId" id="eventId" type="hidden" value="$!event.eventId" />
+		<input name="eventCreateDate" type="hidden" value="$!date.format('yyyy-MM-dd HH:mm:ss',$!event.eventCreateDate)" />
+		<input name="eventStartDate" type="hidden" value="$!date.format('yyyy-MM-dd HH:mm:ss',$!event.eventStartDate)" />
+		<input name="eventFinishDate" id="eventFinishDate" type="hidden" value="$!date.format('yyyy-MM-dd HH:mm:ss',$!event.eventFinishDate)" />
+		<input name="eventRealFinishDate" type="hidden" value="$!date.format('yyyy-MM-dd HH:mm:ss',$!event.eventRealFinishDate)" />
+		<input name="higherEventId" type="hidden" value="$!event.higherEventId" />
+		<input name="mainEventIds" type="hidden" value="$!event.mainEventIds" />
+		<input name="eventState" type="hidden" value="$!event.eventState" />
+		<input name="eventFiles" id="eventFiles" type="hidden" value="$!event.eventFiles" />
+		<input name="commentCount" type="hidden" value="$!event.commentCount" />
+		<input name="eventNum" type="hidden" value="$!event.eventNum" />
+		<input name="eventCheckResult" type="hidden" value="$!event.eventCheckResult" />
+		<input name="lastNum" type="hidden" value="$!lastNum" />
+		<input name="cusId" type="hidden" value="$!cusId" />
+		#if(!$!event.higherEventId)
+			<input name="eventDetail" type="hidden" value="$!event.eventDetail" />
+			<input name="eventName" type="hidden" value="$!event.eventName" />
+		#end
+		#if(!$!event.higherEventId)
+			<tr>
+				<td style="width:30%">选择模板</td>
+				<td  colspan="2" onclick="chooseTemplate()"><div ></div></td>
+			</tr>
+			<tr>
+				<td>事件名称</td>
+				<td colspan="2" onclick="editEventDetail()"><div >$!event.eventName</div></td>
+			</tr>
+			<tr>
+				<td>完成时限</td>
+				<td colspan="2" onclick="getTime()">
+					<div id="timeDiv">
+						#if($!event.eventFinishDate)
+							$!date.format('yyyy-MM-dd HH:mm:ss',$!event.eventFinishDate)
+						#else
+							弹性	
+						#end
+					</div>
+				</td>
+			</tr>
+			<tr>
+				<td>事件标签</td>
+				<td colspan="2" onclick="choseEventTag()"><div>$!eventTag.eventTagName</div></td>
+			</tr>
+			<tr>
+				<td>参与人</td>
+				<td colspan="2" onclick="chosePeople()"><div >选择人员</div></td>
+			</tr>
+			<tr>
+				<td colspan="3">
+					<div style="height:100%;width:100%;">
+						#foreach($obj in $persons)
+							<div style="float:left;width:5em;height:100%;font-size:0.5em;margin-left:0.1em">
+								<div style="float:left;text-align:center">
+									<span>$!obj.eventRole.title()</span>
+								</div>
+								<div style="float:left">
+									<img src="$!imageUrlPrefix/$!obj.cusHeadImg"  />
+								</div>
+								<div style="float:left;text-align:center">
+									<span>$!obj.cusLogName</span>
+								</div>
+							</div>
+						#end
+					</div>
+				</td>
+			</tr>
+		#else
+			<tr style="height:1.5em;">
+				<td style="width:30%">节点类型</td>
+				<td colspan="2">
+					<label><input name="eventType" type="radio" value="RECORD" checked />过程记录</label> 
+					<label><input name="eventType" type="radio" value="CHECK"  #if($!event.eventType == "CHECK") checked #end />节点验收</label> 
+				</td>
+			</tr>
+			<tr style="height:1.5em;">
+				<td colspan="3"><div class="title">事件名称</div></td>
+			</tr>
+			<tr style="height:1.5em;">
+				<td colspan="3"><input type="text" class="text" name="eventName" id="eventName" value="$!event.eventName" /></td>
+			</tr>
+			<tr style="height:1.5em;">
+				<td colspan="3"><div class="title">事件详情</div></td>
+			</tr>
+			<tr style="height:2em;">
+				<td colspan="3" style="height:5em"><textarea class="text" id="eventDetail" name="eventDetail">$!event.eventDetail</textarea ></td>
+			</tr>
+			<tr style="height:1.5em;">
+				<td colspan="3" onclick="chosePerson('MANAGER')"><div class="title">节点责任人</div></td>
+			</tr>
+			<tr>
+				<td colspan="3">
+					<div class="content" style="height:3em" onclick="chosePerson('MANAGER')">
+						#foreach($obj in $commenters)
+							<div style="float:left;width:5em;height:100%;font-size:0.5em;margin-left:0.1em">
+								<div style="float:left;text-align:center">
+									<span>$!obj.eventRole.title()</span>
+								</div>
+								<div style="float:left">
+									<img src="$!imageUrlPrefix/$!obj.cusHeadImg"  />
+								</div>
+								<div style="float:left;text-align:center">
+									<span>$!obj.cusLogName</span>
+								</div>
+							</div>
+						#end
+					</div>
+				</td>
+			</tr>
+			<tr>
+				<td colspan="3" onclick="uploadFile()" ><div class="title">附件</div></td>
+			</tr>
+			<tr>
+				<td colspan="3">
+					<div id="files">
+						#foreach($file in $files)
+							<a href="https://view.officeapps.live.com/op/view.aspx?src=http://www.genzongbao.com.cn/$!fileUrlPrefix/$file.fileId.$file.fileSuffix;" onclick="">$file.fileName.$file.fileSuffix</a> 
+						#end
+					</div>
+				</td>
+			</tr>
+		#end
+		<tr style="height:1.5em">
+			<td colspan="3" onclick="addNodes('')">添加节点</td>
+		</tr>
+		#foreach($node in $events)
+			<tr style="height:0.5em">
+				<td colspan="3" onclick="addNodes('$!node.eventNum')">+</td>
+			</tr>
+			<tr style="height:1em">
+				<td colspan="2" onclick="editNode('$!node.eventId')">$!node.eventName</td>
+				<td style="width:15%" onclick="delNode('$!node.eventId')">删除</td>
+			</tr>
+		#end
+		<tr style="height:0.5em">
+			<td colspan="3" onclick="addNodes('')">+</td>
+		</tr>
+		<tr style="height:3em">
+			<td colspan="3" onclick="submitNodes()"><div style="text-align:center">保存</div></td>
+		</tr>
+	</table>
+</form>
+<script>
+var eventId="$!event.eventId";
+function editEventDetail(){
+	saveEventAndOpenNewPage("${request.getContextPath()}/event/edit-event-detail?cusId=$!cusId&eventId=%%eventId%%");
+}
+
+function chooseTemplate(){
+	saveEventAndOpenNewPage("${request.getContextPath()}/event/template-list");
+}
+function choseEventTag(){
+	saveEventAndOpenNewPage("${request.getContextPath()}/event/tag-list?cusId=$!cusId&eventId=%%eventId%%");
+}
+function getTime(){
+	window.android.showTimeDialog();
+}
+function setTime(time){
+	$("#eventFinishDate").val(time);
+	$("#timeDiv").text(time);
+}
+function uploadFile(){
+	window.android.showFileDialog();
+}
+function setEventFile(data){
+	var list = eval(data);
+	for(var i = 0 ; i<list.length;i++){
+		$("#files").html($("#files").html()+'<a href="$!fileUrlPrefix/'+list[i].fileId+'.'+list[i].fileSuffix+'" onclick="">'+list[i].fileName+'.'+list[i].fileSuffix+'   </a>');
+		$("#eventFiles").val($("#eventFiles").val()+","+list[i].fileId);
+	}
+}
+function chosePeople(){
+	saveEventAndOpenNewPage("${request.getContextPath()}/event/event-people?eventId=%%eventId%%&cusId=$!cusId");
+}
+function submitNodes(){
+	if("$!event.higherEventId"){
+		saveEventAndOpenNewPage("${request.getContextPath()}/event/edit-event-page?eventId=$!event.higherEventId&cusId=$!cusId");
+	} else {
+		saveEventAndOpenNewPage("${request.getContextPath()}/event/edit-event-page?eventId=%%eventId%%&cusId=$!cusId");
+	}
+}
+function chosePerson(type){
+	if("$!event.eventId" == ""){
+		$.ajax({
+			type: "POST",
+			url:sys.contextPath+"/create-serial-num?num="+Math.random(),
+			dataType:"text",
+			success: function(data) {
+				$("#eventId").val(data);
+				eventId = data;
+				$.ajax({
+					type: "POST",
+					url:sys.contextPath+"/event/save-event?num="+Math.random(),
+					data:$('#form').serialize(),
+					dataType:"json",
+					success: function(data) {
+						$.ajax({
+							type: "POST",
+							url:sys.contextPath+"/event/people-list?num="+Math.random(),
+							data:{"eventId":eventId,"cusId":$!cusId,"eventRole":type},
+							dataType:"json",
+							success: function(data) {
+								var obj = eval(data);
+								window.android.toChoseCustomer(JSON.stringify(obj));
+							}
+						});
+					}
+				});
+			}
+		});
+	} else {
+		$.ajax({
+			type: "POST",
+			url:sys.contextPath+"/event/save-event?num="+Math.random(),
+			data:$('#form').serialize(),
+			dataType:"json",
+			success: function(data) {
+				$.ajax({
+					type: "POST",
+					url:sys.contextPath+"/event/people-list?num="+Math.random(),
+					data:{"eventId":"$!event.eventId","cusId":$!cusId,"eventRole":type},
+					dataType:"json",
+					success: function(data) {
+						var obj = eval(data);
+						window.android.toChoseCustomer(JSON.stringify(obj));
+					}
+				});
+			}
+		});
+	}
+}
+function addNodes(eventNum){
+	if(eventId == ""){
+		$.ajax({
+			type: "POST",
+			url:sys.contextPath+"/create-serial-num?num="+Math.random(),
+			dataType:"text",
+			success: function(data) {
+				$("#eventId").val(data);
+				eventId = data;
+				$.ajax({
+					type: "POST",
+					url:sys.contextPath+"/event/save-event?num="+Math.random(),
+					data:$('#form').serialize(),
+					dataType:"json",
+					success: function(data) {
+						$.ajax({
+							type: "POST",
+							url:sys.contextPath+"/create-serial-num?num="+Math.random(),
+							dataType:"text",
+							success: function(data) {
+								$.ajax({
+									type: "POST",
+									url:sys.contextPath+"/event/save-event?eventId="+data+"&higherEventId="+eventId+"&cusId=$!cusId&lastNum="+eventNum,
+									dataType:"json",
+									success: function(data) {
+										window.location = "${request.getContextPath()}/event/edit-event-page?eventId="+eventId+"&cusId=$!cusId";
+									}
+								});
+							}
+						});
+					}
+				});
+			}
+		});
+	} else {
+		$.ajax({
+			type: "POST",
+			url:sys.contextPath+"/create-serial-num?num="+Math.random(),
+			dataType:"text",
+			success: function(data) {
+				$.ajax({
+					type: "POST",
+					url:sys.contextPath+"/event/save-event?eventId="+data+"&higherEventId="+eventId+"&cusId=$!cusId&lastNum="+eventNum,
+					dataType:"json",
+					success: function(data) {
+						window.location = "${request.getContextPath()}/event/edit-event-page?eventId="+eventId+"&cusId=$!cusId";
+					}
+				});
+			}
+		});
+	}
+}
+function delNode(id){
+	$.ajax({
+		type: "POST",
+		url:sys.contextPath+"/event/del-event?eventId="+id+"&cusId=$!cusId",
+		dataType:"text",
+		success: function(data) {
+			window.location = "${request.getContextPath()}/event/edit-event-page?eventId="+eventId+"&cusId=$!cusId";
+		}
+	});
+}
+function editNode(eventId){
+	saveEventAndOpenNewPage("${request.getContextPath()}/event/edit-event-page?eventId="+eventId+"&cusId=$!cusId");
+}
+function saveEventAndOpenNewPage(url){
+	if(eventId == ""){
+		$.ajax({
+			type: "POST",
+			url:sys.contextPath+"/create-serial-num?num="+Math.random(),
+			dataType:"text",
+			success: function(data) {
+				$("#eventId").val(data);
+				eventId = data;
+				$.ajax({
+					type: "POST",
+					url:sys.contextPath+"/event/save-event?num="+Math.random(),
+					data:$('#form').serialize(),
+					dataType:"json",
+					success: function(data) {
+						if(url){
+							window.location = url.replace("%%eventId%%",eventId);
+						}
+					}
+				});
+			}
+		});
+	} else {
+		$.ajax({
+			type: "POST",
+			url:sys.contextPath+"/event/save-event?num="+Math.random(),
+			data:$('#form').serialize(),
+			dataType:"json",
+			success: function(data) {
+				if(url){
+					window.location = url.replace("%%eventId%%",eventId);
+				}
+			}
+		});
+	}
+}
+</script>

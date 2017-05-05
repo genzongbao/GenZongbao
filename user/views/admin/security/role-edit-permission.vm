@@ -1,0 +1,132 @@
+<link rel="stylesheet" href="#ctx/css/ztree/zTreeStyle/zTreeStyle.css" type="text/css">
+<script type="text/javascript" src="#ctx/js/ztree/jquery.ztree.all-3.5.js"></script>
+<script type="text/javascript">
+
+#set($tmp = "")
+#foreach($data in $permissions)
+	#if($volocityCount == 1)
+		#set($tmp = $data.permissionCodes)
+	#else
+		#set($tmp = $tmp+","+$data.permissionCodes)
+	#end
+#end
+
+var setting = {
+	check: {
+		enable: true
+	},
+	data: {
+		simpleData: {
+			enable: false
+		}
+	},
+	callback: {
+		onClick: bindClick
+	}
+};
+var zNodes = [
+	#foreach($syskey in $pm.systems.keySet())
+		#set($permSys = $pm.systems.get($syskey))
+		{	
+			name:"$permSys.name",
+			isParent:true,
+		 	#if($velocityCount == 1)open:true,#end
+			children:[
+				#foreach($resourceKey in $permSys.resourceMap.keySet())
+					#set($resource = $permSys.resourceMap.get($resourceKey))
+					{	
+						name:"$resource.name", 
+						open:true,
+						isParent:true,
+						children:[
+							#foreach($permissionKey in $resource.permissionMap.keySet())
+								#set($permission = $resource.permissionMap.get($permissionKey))
+								{name:"$permission.name",code:"$permission.code"#if($tmp.indexOf($permission.code) > 0),checked:true#end},
+							#end
+						]
+					},
+				#end
+			]
+		},
+	#end
+];
+
+$(document).ready(function(){
+	$.fn.zTree.init($("#tree"), setting, zNodes);
+	var tree = $.fn.zTree.getZTreeObj("tree");
+	var selectedNodes = tree.getCheckedNodes(true);
+	for(var i=0; i<selectedNodes.length; i++) {
+		checkParent(selectedNodes[i], tree)
+	}
+	
+});
+
+function bindClick( event, treeId, treeNode, clickFlag) {
+	var treeObj = $.fn.zTree.getZTreeObj("tree");
+	var children = treeNode.children;
+	
+	if(typeof(children) != "undefined") {
+		
+	}else{
+		if(treeNode.checked){
+			treeObj.checkNode(treeNode, false, true,true);
+		}else{
+			treeObj.checkNode(treeNode, true, true,true);
+		}
+	}
+}
+function subTree() {
+	var roleId = $role.roleId;
+	var treeObj = $.fn.zTree.getZTreeObj("tree");
+	var nodes = treeObj.getCheckedNodes(true);
+	var permissions = "";
+	for(var i = 0 ; i < nodes.length ; i++) {
+		if(typeof nodes[i].code != "undefined") {
+			if(permissions == "") {
+				permissions = nodes[i].code;
+			}else{
+				permissions = permissions+","+nodes[i].code;
+			}
+		}
+	}
+	var form = $("#tree-form");
+	
+	var roleIdInput = $("<input name='roleId' style='display:none'/>");
+	roleIdInput.val(roleId);
+	
+	var permissionsInput = $("<input name='permissions' style='display:none'/>");
+	permissionsInput.val(permissions);
+	
+	form.append(roleIdInput);
+	form.append(permissionsInput);
+	form.submit();
+}
+
+function checkParent(node, treeObj) {
+	var parentNode = treeObj.getNodeByTId(node.parentTId);
+	treeObj.checkNode(parentNode, true);
+	if(parentNode.level != 0) {
+		checkParent(parentNode, treeObj);
+	}
+}
+
+</script>
+<ul class="breadcrumb" style="position:relative">
+    <li><a href="${request.getContextPath()}/admin/menu?menuId=AUTH">权限管理</a> <span class="divider">/</span></li>
+    <li><a href="${request.getContextPath()}/admin/menu?menuId=AUTH_ROLE">角色管理</a> <span class="divider">/</span></li>
+    <li class="active">角色授权</li>
+    <button class="btn btn-primary" type="button" style="position:absolute;top:0;right:10px;" onClick="subTree()">修改权限</button>
+</ul>
+
+<div style="width:98%;margin:20px auto">
+#if($alertMsg)
+<div class="alert alert-$alertType">
+    <button type="button" class="close" data-dismiss="alert">×</button>
+    <strong>提示:</strong> $alertMsg!
+</div>
+#end
+<ul id="tree" class="ztree">
+</ul>
+</div>
+<form id='tree-form' action="role-permission-edit" method="POST">
+</form>

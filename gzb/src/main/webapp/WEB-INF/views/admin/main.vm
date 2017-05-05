@@ -1,0 +1,48 @@
+<link rel="stylesheet" href="${request.getContextPath()}/css/admin-index.css"/>
+<script type="text/javascript" src="${request.getContextPath()}/js/admin/main.js"></script>
+<div class="admin_main">
+	<div  class="admin_main_hr"></div>
+	#foreach($menu in ${menus.topList})
+		#if(${menu.menuId} == "PRO")
+			<div class="admin_main_one" onclick="projectEntrance('project')">
+				<img src="${request.getContextPath()}/images/index/main/project-manager.png" width=140  height=140/>
+				<div class="admin_main_text">项目管理</div>
+			</div>
+		#elseif(${menu.menuId} == "JUDGE")
+			<div class="admin_main_two" onclick="projectEntrance('expert')">
+				<img src="${request.getContextPath()}/images/index/main/expert-manager.png" width=140  height=140/>
+				<div class="admin_main_text">专家管理</div>
+			</div>
+		#elseif(${menu.menuId} == "STATS")
+			<div class="admin_main_two" onclick="projectEntrance('data')">
+				<img src="${request.getContextPath()}/images/index/main/data-statistics.png" width=140  height=140/>
+				<div class="admin_main_text">数据统计</div>
+			</div>
+		#elseif(${menu.menuId} == "CUSTOMER")
+			<div class="admin_main_two" onclick="projectEntrance('user')">
+				<img src="${request.getContextPath()}/images/index/main/user-manager.png" width=140  height=140/>
+				<div class="admin_main_text">客户管理</div>
+			</div>
+		#elseif(${menu.menuId} == "NEWS")
+			<div class="admin_main_one" onclick="projectEntrance('new')">
+				<img src="${request.getContextPath()}/images/index/main/personal-center.png" width=140  height=140/>
+				<div class="admin_main_text">新闻管理</div>
+			</div>
+		#elseif(${menu.menuId} == "AUTH")
+			<div class="admin_main_two" onclick="projectEntrance('system')">
+				<img src="${request.getContextPath()}/images/index/main/system-manager.png" width=140  height=140/>
+				<div class="admin_main_text">权限管理</div>
+			</div>
+		#elseif(${menu.menuId} == "SYS")
+			<div class="admin_main_two" onclick="projectEntrance('authority')">
+			<img src="${request.getContextPath()}/images/index/main/authority-manager.png" width=140  height=140/>
+			<div class="admin_main_text">系统参数</div>
+		</div>
+		#elseif(${menu.menuId} == "USER")
+			<div class="admin_main_two" onclick="projectEntrance('personal')">
+				<img src="${request.getContextPath()}/images/index/main/new-manager.png" width=140  height=140/>
+				<div class="admin_main_text">个人中心</div>
+			</div>
+		#end
+	#end
+</div>

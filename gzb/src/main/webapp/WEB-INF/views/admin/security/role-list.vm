@@ -1,0 +1,108 @@
+<script type="text/javascript">
+intArray = [];
+dateArray = ["minCreateDate","maxCreateDate"];
+function editState(userId,state) {
+	var alertMsg;
+	if(state == "VALID") {
+		alertMsg = "确定解冻吗？";
+	}else if(state == "FREEZED") {
+		alertMsg = "确定冻结吗？";
+	}else{
+		alertMsg = "确定注销吗？";
+	}
+	if(confirm(alertMsg)) {
+		window.location.href="edit-state?state="+state+"&userId="+userId;
+	}
+}
+function roleAddPage() {
+	window.location.href="role-add-page";
+}
+/**
+ * 角色删除
+ */
+function roleDelete(roleId) {
+	if(confirm("确认删除？")) {
+		window.location.href="role-delete?roleId="+roleId;
+	}
+}
+function roleUpdate(roleId) {
+		window.location.href="role-update?roleId="+roleId;
+}
+</script>
+<ul class="breadcrumb">
+    <li><a href="${request.getContextPath()}/admin/menu?menuId=AUTH">权限管理</a> <span class="divider">/</span></li>
+    <li class="active">角色管理</li>
+</ul>
+<div style="width:98%;margin:20px auto">
+	#if($alertMsg)
+	<div class="alert alert-$alertType">
+	    <button type="button" class="close" data-dismiss="alert">×</button>
+	    <strong>提示:</strong> $alertMsg!
+	</div>
+	#end
+	<div class="well" style="overflow:hidden;height50px">
+		<form class="form-inline" action="role-list" method="POST">
+		<table class="table search-table">
+			<tr>
+				<td class="right-td">角色名</td>
+				<td>
+					<div class="form-group">
+					<input name="roleName" type="text" style="width:150px" value="$!query.roleName"/>
+					</div>
+				</td>
+				<td class="right-td">创建日期</td>
+				<td colspan="3">
+					<div class="form-group">
+						<div class="input-append date form_date_start">
+			                <input value="$!date.format("yyyy-MM-dd",$!query.minCreateDate)" style="width:120px" id="minCreateDate" value="$!query.minCreateDate" name="minCreateDate" class="form-control span6" size="16" type="text" readonly>
+			                <span name="remove-time" class="add-on">&nbsp;<i class="icon-remove"></i></span>
+			            </div>
+			            <label for="minIssueDate">-</label>
+			            <div class="input-append date form_date_start">
+			                <input value="$!date.format("yyyy-MM-dd",$!query.maxCreateDate)" style="width:120px" id="maxCreateDate" value="$!query.maxCreateDate" name="maxCreateDate" class="form-control span6" size="16" type="text" readonly>
+			                <span name="remove-time" class="add-on">&nbsp;<i class="icon-remove"></i></span>
+			            </div>
+					</div>
+				</td>
+				<td colspan="2" style="text-align:right">
+					<div class="form-group">
+						<button class="btn" type="submit">&nbsp;<i class="icon-search"></i> 搜一下</button>
+						<button id="clearbtn" class="btn" type="button">&nbsp;<i class="icon-remove"></i> 清空</button>
+						<button class="btn" type="button" onclick="roleAddPage()" >&nbsp;<i class="icon-plus"></i> 添加角色</button>
+					</div>
+				</td>
+			</tr>
+		</table>
+		</form>
+	</div>
+	<table class="table table-bordered table-hover table-striped">
+	  <thead>
+	    <tr>
+	      <th>角色名</th>
+	      <th>描述</th>
+	      <th>创建日期</th>
+	      <th style="text-align: center">操作</th>
+	    </tr>
+	  </thead>
+	  <tbody>
+	  	#foreach($data in $page.data)
+	    <tr>
+	      <td>$!data.roleName</td>
+	      <td>$!data.roleDesc</td>
+	      <td>$date.format("yyyy-MM-dd HH:mm:ss", $!data.createDate)</td>
+	      <td style="text-align: center">
+	      #if($!{data.roleId} == "1")
+	      #else
+	      	<a href="javascript:void(0)" onclick="roleUpdate('$data.roleId')" title="修改">&nbsp;<i class="icon-edit"></i></a>
+			<a href="role-edit-permission-page?roleId=$data.roleId" title="授权">&nbsp;<i class="icon-share"></i></a>
+			<a href="javascript:void(0)" onclick="roleDelete('$data.roleId')" title="删除">&nbsp;<i class="icon-trash"></i></a>
+	      #end
+	      </td>
+	    </tr>
+	    #end
+	  </tbody>
+	</table>
+		#if($page.totalSize > 0) 
+			#pagination($page) 
+		#end
+</div>

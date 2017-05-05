@@ -1,0 +1,100 @@
+<style>
+.msg td{border-top:none}
+label{font-size:12px;color:gray}
+label{font-size:12px}
+.table .righttd{width:100px;text-align:right}
+.table .lefttd{text-align:left}
+</style>
+
+<ul class="breadcrumb">
+    <li><a href="${request.getContextPath()}/admin/menu?menuId=USER">个人中心</a> <span class="divider">/</span></li>
+    <li class="active">个人信息</li>
+</ul>
+<div style="width:98%;margin:20px auto">
+	<div class="block">
+        <a href="javascript:void(0)" class="block-heading" data-toggle="collapse">个人信息</a>
+        <div id="page-stats" class="block-body collapse in">
+			<table class="table msg" >
+				<tr>
+					<td class="righttd"><label>登录账号:</label></td>
+					<td class="lefttd">$!user.loginName</td>
+					<td class="righttd"><label>真实姓名:</label></td>
+					<td class="lefttd">$!user.realName</td>
+				</tr>
+				<tr>
+					<td class="righttd"><label>身份证号码:</label></td>
+					<td class="lefttd">$!user.idCardNo</td>
+					<td class="righttd"><label>手机号码:</label></td>
+					<td class="lefttd">$!user.mobile &nbsp;<a href="javascript:void(0);" class="borrowers_buy_button" data-toggle="modal" data-target="#updatePhone"><i class="icon-edit" ></i></a></td>
+				</tr>
+				<tr>
+					<td class="righttd"><label>注册时间:</label></td>
+					<td class="lefttd">$!date.format("yyyy-MM-dd HH:mm:ss",$!user.registerTime)</td>
+					<td class="righttd"><label>最后登录时间:</label></td>
+					<td class="lefttd">$!date.format("yyyy-MM-dd HH:mm:ss",$!user.lastLoginTime)</td>
+				</tr>
+				<tr>
+					<td class="righttd"><label>状态:</label></td>
+					<td class="lefttd">
+					#if($!user.userState == $dict.UserState.VALID)
+		          		<span class="label label-success">有效</span>
+		          	#elseif($!user.userState == $dict.UserState.FREEZED)
+		          		<span class="label label-default">冻结</span>
+		          	#elseif($!user.userState == $dict.UserState.REMOVED)
+		          		<span class="label label-warning">注销</span>
+		          	#end
+		          	</td>
+				</tr>
+			</table>
+        </div>
+    </div>
+</div>
+<!--修改手机号-->
+<div class="modal fade" id="updatePhone" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+	<div class="modal-dialog modal_div" style="margin:auto;">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+				<h4 class="modal-title" id="myModalLabel">修改手机号</h4>
+			</div>
+			<div class="modal-body">
+				<form class="form-horizontal" id="update_phone" action="update-phone" method="post">
+					 <div class="control-group">
+						<h3 style="text-align: center;">$!{user.loginName}</h3>
+						<span id="cusPhone-tips">&nbsp;&nbsp;&nbsp;</span>
+					</div>
+					 <div class="control-group">
+					 	<label class="control-label" style="text-align: right;">原手机号:</label>
+					 	<div class="controls">
+							<input type="text" class="form-control" id="oldMobile" name="oldMobile" value="$!{user.mobile}" readonly/>
+							<label id="oldMobile-error" class="error" for="oldMobile"></label>
+						</div>
+					</div>
+					<div class="control-group">
+						<label class="col-xs-4 control-label" style="text-align: right;">新手机号:</label>
+						<div class="controls">
+							<input type="text" class="form-control" id="newMobile" name="mobile" />
+							<label id="newMobile-error" class="error" for="newMobile"></label>
+						</div>
+					</div>
+					<div class="control-group">
+						<label class="control-label" style="text-align: right;">手机验证码:</label>
+						<div class="controls">
+							<input type="text" class="form-control" style="width:100px;" id="phoneCode" name="phoneCode" />
+							<button type="button" id="get_validcode" for="phoneCode" class="btn btn-primary form-control">获取验证码</button>
+							<label id="phoneCode-error" class="error" for="phoneCode"></label>
+							<span id="phoneCode-tips"></span>
+						</div>
+					</div>
+					<div class="control-group">
+						<label class="col-xs-5 control-label">&nbsp;</label>
+						<button type="submit" class="btn btn-primary col-xs-5">提&nbsp;&nbsp;交</button>
+					</div>
+				</form>
+			<div>
+		</div>
+	</div>
+</div>
+<script type="text/javascript" src="${request.getContextPath()}/js/user-info.js"></script>

@@ -1,0 +1,51 @@
+<ul class="breadcrumb">
+    <li><a href="${request.getContextPath()}/admin/menu?menuId=SYS">系统管理</a> <span class="divider">/</span></li>
+    <li class="active">系统参数配置</li>
+</ul>
+﻿<div style="width:98%;margin:0 auto">
+	<div class="well" style="overflow: hidden;">
+		<i class="icon-cogs"></i>&nbsp;&nbsp;&nbsp;&nbsp;<b>参数配置</b>
+	</div>
+	#if($alertMsg)
+		<div class="alert alert-$alertType message_alert">
+			<button type="button" class="close" data-dismiss="alert">×</button>
+		    <strong>提示:</strong> $alertMsg!
+		</div>
+	#end
+	<table class="table table-hover table-bordered">
+		<thead>
+			<tr>
+				<th style="text-align: center" width="15%">配置项</th>
+				<th style="text-align: center" width="10%">配置项值</th>
+				<th style="text-align: center" width="10%">操作</th>
+			</tr>
+		</thead>
+		<tbody>
+			#set($index = 0)
+			#foreach($config in $configs)
+				<tr>
+					<form id="$!{config.configId}" action="sys-config-update" method="POST" >
+						<div id="$index" />
+						<td style="text-align: center">$!{config.configDescription}</td>
+						<td><input type="text" id="configValue$index" value="$!{config.configValue}"/></td>
+						<td style="text-align: center; width: 12px">
+							<div id="btn">
+								<button type="button"  onclick="config($index,'$!{config.configId}')" >
+									&nbsp;<i class="icon-pencil"></i> 修改
+								</button>
+							</div>
+						</td>
+					</form>
+				</tr>
+				#set($index = $index+1)
+			#end
+		</tbody>
+	</table>
+</div>
+<script type="text/javascript">
+function config(index,configId) {
+	var content = "<input type='hidden' name='configId' value='"+configId+"'><input type='hidden' name='configValue' value='"+$("#configValue"+index).val()+"'>";
+	$("#"+index).html(content);
+	$("#"+configId).submit();
+}
+</script>

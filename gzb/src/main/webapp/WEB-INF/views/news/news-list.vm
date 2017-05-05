@@ -1,0 +1,161 @@
+<script type="text/javascript">
+intArray = ["minClickCount","maxClickCount"];
+dateArray = ["minPublishTime","maxPublishTime"];
+</script>
+<ul class="breadcrumb">
+	<li><a href="${request.getContextPath()}/admin/menu?menuId=NEWS">新闻管理</a> <span class="divider">/</span></li>
+	<li class="active">#if($!menuId=='NEWS_LIST' || $!query.newsColumnId==1)新闻管理#else帮助中心#end</li>
+</ul>
+<div style="width:98%;margin:20px auto">
+#if($alertMsg)
+<div class="alert alert-$alertType">
+    <button type="button" class="close" data-dismiss="alert">×</button>
+    <strong>提示:</strong> $alertMsg!
+</div>
+#end
+<div class="well" style="overflow:hidden;height50px">
+	<form class="form-inline" action="news-list" method="POST">
+	<input type="hidden" name="newsColumnId" value="$!query.newsColumnId"/>
+	<input type="hidden" name="menuId" value="$!menuId"/>
+	<table class="table search-table">
+		<tr>
+			#if($!menuId !="ABOUT_US_LIST")
+			<td class="right-td">标题 </td>
+			<td>
+				<div class="form-group">
+					<input name="title" type="text" style="width:150px" value="$!query.title"/>
+				</div>
+			</td>
+			<td class="right-td">作者</td>
+			<td>
+				<div class="form-group">
+					<input name="author" type="text" style="width:150px" value="$!query.author"/>
+				</div>
+			</td>
+			#else
+			<td class="right-td">作者</td>
+			<td colspan="3">
+				<div class="form-group">
+					<input name="author" type="text" style="width:150px" value="$!query.author"/>
+				</div>
+			</td>
+			#end
+			<td class="right-td">类别</td>
+			<td>
+				<div class="form-group">
+					<select name="newsTypeId">
+						<option value="">全部</option>
+						#foreach($typeData in $types)
+							#if($typeData.newsTypeId ==6)
+							#else
+								<option value="$typeData.newsTypeId" #if($query.newsTypeId == $typeData.newsTypeId)selected="selected"#end>$typeData.newsTypeName</option>
+							#end
+						#end
+					</select>
+				</div>
+			</td>
+		</tr>
+		<tr>
+			<td class="right-td">发布日期</td>
+			<td colspan="3">
+				<div class="form-group">
+					<div class="input-append date form_date_start">
+		                <input value="$!date.format("yyyy-MM-dd",$!query.minPublishTime)" style="width:120px" id="minPublishTime" value="$!query.minPublishTime" name="minPublishTime" class="form-control span6" size="16" type="text" readonly>
+		                <span name="remove-time" class="add-on">&nbsp;<i class="icon-remove"></i></span>
+		            </div>
+		            <label for="minIssueDate">-</label>
+		            <div class="input-append date form_date_start">
+		                <input value="$!date.format("yyyy-MM-dd",$!query.maxPublishTime)" style="width:120px" id="maxPublishTime" value="$!query.maxPublishTime" name="maxPublishTime" class="form-control span6" size="16" type="text" readonly>
+		                <span name="remove-time" class="add-on">&nbsp;<i class="icon-remove"></i></span>
+		            </div>
+				</div>
+			</td>
+			<td colspan="8" style="text-align:right">
+				<div class="form-group">
+					<button class="btn" type="submit">&nbsp;<i class="icon-search"></i> 搜一下</button>
+					<button id="clearbtn" class="btn" type="button">&nbsp;<i class="icon-remove"></i> 清空</button>
+					<button class="btn" type="button" onclick="newsAddPage('$!menuId','$!query.newsColumnId')" >&nbsp;<i class="icon-plus"></i> 添加</button>
+				</div>
+			</td>
+		</tr>
+	</table>
+	</form>
+</div>
+<div class="well"style="min-height:400px" >
+    <table class="table table-bordered table-hover">
+      <thead>
+        <tr>
+          <th>标题</th>
+          <th>发布时间</th>
+          <th>作者</th>
+          <th>状态</th>
+          <th style="text-align: center">操作</th>
+        </tr>
+      </thead>
+      <tbody>
+      	#foreach($data in $page.data)
+        <tr>
+          <td>$!data.title</td>
+          <td>$date.format("yyyy-MM-dd HH:mm:ss",$!data.publishTime)</td>
+          <td>$!data.author</td>
+          <td>
+          	#if($!data.newsState == "APPLING")
+          		<span class="label label-warning">$data.newsState.title()</span>
+          	#elseif($!data.newsState == "NORMAL")
+          		<span class="label label-success">$data.newsState.title()</span>
+          	#elseif($!data.newsState == "REFUSE")
+          		<span class="label label-danger">$data.newsState.title()</span>
+          	#else
+          		<span class="label label-default">$data.newsState.title()</span>
+          	#end
+          </td>
+          <td style="text-align: center">
+          	  #if($!data.newsState == 'APPLING')
+          	  	<a #if($shiro.hasPermission("News:look")) href="${request.getContextPath()}/admin/news-manage/news-look?newsId=$!data.newsId&menuId=$!menuId" #else #noPermission #end title="预览">&nbsp;<i class="icon-eye-open"></i></a>
+          	  	<a #if($shiro.hasPermission("News:audit")) href="javascript:void(0)" onclick="updateState('$data.newsId','NORMAL')" #else #noPermission #end title="审核通过">&nbsp;<i class="icon-ok"></i> </a>
+	        	<a #if($shiro.hasPermission("News:audit")) href="javascript:void(0)" onclick="updateState('$data.newsId','REFUSE')" #else #noPermission #end title="审核拒绝">&nbsp;<i class="icon-remove"></i> </a>
+	        	<a #if($shiro.hasPermission("News:edit")) href="news-edit-page?newsId=$!data.newsId&menuId=$!menuId" #else #noPermission #end title="编辑">&nbsp;<i class="icon-edit"></i></a>
+          	  #elseif($!data.newsState == 'NORMAL')
+		  	  	<a #if($shiro.hasPermission("News:look")) href="${request.getContextPath()}/admin/news-manage/news-look?newsId=$!data.newsId&menuId=$!menuId" #else #noPermission #end title="预览">&nbsp;<i class="icon-eye-open"></i></a>
+		  	  	<a #if($shiro.hasPermission("News:delete")) href="javascript:void(0)" onclick="updateState('$!data.newsId','DELETE','$!data.newsColumnId','$!menuId')" #else #noPermission #end title="删除">&nbsp;<i class="icon-remove"></i></a>
+		  	  	#if($!menuId=='ABOUT_US_LIST')
+		  	  		<a #if($shiro.hasPermission("News:edit")) href="news-edit-page?newsId=$!data.newsId&menuId=$!menuId" #else #noPermission #end title="编辑">&nbsp;<i class="icon-edit"></i></a>
+		  	  	#end
+		  	  #else
+		  	  <a #if($shiro.hasPermission("News:look")) href="${request.getContextPath()}/admin/news-manage/news-look?newsId=$!data.newsId&menuId=$!menuId" #else #noPermission #end title="预览">&nbsp;<i class="icon-eye-open"></i></a>
+		      #end
+          </td>
+        </tr>
+        #end
+      </tbody>
+    </table>
+	#if($page.totalSize>0)
+		#pagination($page)
+	#end
+</div>
+</div>
+<script>
+	var menuId="$!menuId";
+	function updateState(newsId,state) {
+		var message;
+		if(state == "NORMAL") {
+			message = "确定通过审核吗？";
+		}else if(state == "REFUSE") {
+			message = "确定拒绝通过吗？";
+		}
+		else if(state == "DELETE") {
+			message = "确定删除吗？";
+		}
+		if(confirm(message)) {
+			window.location.href = "update-state?newsId="+newsId+"&state="+state+"&menuId="+menuId;
+		}
+	}
+	//跳转新闻添加界面
+	function newsAddPage(menuId,newsColumnId) {
+		window.location.href="news-publish-page?newsColumnId="+newsColumnId+"&menuId="+menuId;
+		//window.location.href="news-check-column?newsColumnId="+newsColumnId;
+	}
+	function addNews(projectId){
+		window.location.href="news-publish?projectId="+projectId;
+	}
+</script>

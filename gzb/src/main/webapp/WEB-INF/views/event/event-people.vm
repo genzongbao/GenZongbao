@@ -1,0 +1,113 @@
+<style>
+body{font-size:1.5em;background-color:#e5e5e5;}
+.table{
+	width:100%;height:100%;
+}
+.table tr{
+	background-color:#ffffff;text-align:center;
+}
+.sbd{
+	width:100%;height:3em;text-align:center;line-height:1em;background-color:#ffffff;
+}
+.title{
+	text-align:center;line-height:1em;background-color:#ffffff;font-size:1em;width:100%;
+}
+.content{
+	text-align:center;background-color:#ffffff;font-size:1em;height:2em;
+}
+img{height:2em;width:2em;}
+</style>
+<form id="form" method="POST" action="submit-event-detail">
+	<table class="table">
+		#if(!$!event.higherEventId)
+			<tr>
+				<td><div class="title">创建人</div></td>
+			</tr>
+			<tr>
+				<td>
+				<div class="content">
+					<div style="float:left;margin-left:30%">
+						<img src="$!imageUrlPrefix/$!creater.cusHeadImg"  />
+					</div>
+					<div style="float:left">
+						<span>$!creater.cusLogName</span>
+					</div>
+				</div>
+				</td>
+			</tr>
+		#end
+		<tr>
+			<td><div class="title">责任人</div></td>
+		</tr>
+		<tr>
+			<td>
+				<div class="content" onclick="chosePerson('MANAGER')">
+					#if($!manager)
+						<div style="float:left;margin-left:30%">
+							<img src="$!imageUrlPrefix/$!manager.cusHeadImg"  />
+						</div>
+						<div style="float:left">
+							<span>$!manager.cusLogName</span>
+						</div>
+					#end
+				</div>
+			</td>
+		</tr>
+		#if(!$!event.higherEventId)
+			<tr>
+				<td><div class="title">验收人</div></td>
+			</tr>
+			<tr>
+				<td>
+					<div class="content" onclick="chosePerson('CHECKER')">
+						#if($!checker)
+							<div style="float:left;margin-left:30%">
+								<img src="$!imageUrlPrefix/$!checker.cusHeadImg"  />
+							</div>
+							<div style="float:left">
+								<span>$!checker.cusLogName</span>
+							</div>
+						#end
+					</div>
+				</td>
+			</tr>
+		#end
+		<tr>
+			<td><div class="title">评论人</div></td>
+		</tr>
+		<tr>
+			<td><div class="content" style="height:3em" onclick="chosePerson('COMMENTER')">
+					#foreach($cus in $commenters)
+						<div style="float:left;width:5em;height:100%;font-size:1em;margin-left:0.1em">
+							<div style="float:left;width:100%;">
+								<img src="$!imageUrlPrefix/$!cus.cusHeadImg"  />
+							</div>
+							<div style="float:left;text-align:center;width:100%;">
+								<span>$!cus.cusLogName</span>
+							</div>
+						</div>
+					#end
+			</div></td>
+		</tr>
+		<tr>
+			<td colspan="2"><div class="sbd" onclick="submit()">提交</div></td>
+		</tr>
+	</table>
+</form>
+<script>
+function submit(){
+	$("#form").submit();
+}
+function chosePerson(type){
+	$.ajax({
+		type: "POST",
+		url:sys.contextPath+"/event/people-list?num="+Math.random(),
+		data:{"eventId":"$!event.eventId","cusId":$!cusId,"eventRole":type},
+		dataType:"json",
+		success: function(data) {
+			var obj = eval(data);
+			window.android.toChoseCustomer(JSON.stringify(obj));
+		}
+	});
+}
+</script>

@@ -1,0 +1,71 @@
+<style>
+	.msg td{border-top:none}
+	label{font-size:12px;color:gray}
+	label{font-size:12px}
+	.table .righttd{width:49%;text-align:right}
+	.table .lefttd{width:49%;text-align:left}
+</style>
+<ul class="breadcrumb">
+    <li><a href="${request.getContextPath()}/admin/menu?menuId=USER">个人中心</a> <span class="divider">/</span></li>
+    <li class="active">修改密码</li>
+</ul>
+<div style="width:98%;margin:20px auto">
+	#if($alertMsg)
+	<div class="alert alert-$alertType">
+	    <button type="button" class="close" data-dismiss="alert">×</button>
+	    <strong>提示:</strong> $alertMsg!
+	</div>
+	#end
+</div>
+<form id="change-form" action="password-change-save" method="post">
+<div style="width:98%;margin:0px auto;">
+	<div class="block" style="min-height: 500px;">
+        <a href="javascript:void(0)" class="block-heading" data-toggle="collapse">修改密码</a>
+        <div id="page-stats" class="block-body collapse in" >
+			<table class="table search-table msg" >
+				<tr>
+					<td class="righttd" ><label>原密码:</label></td>
+					<td class="lefttd" >
+						<input type="password" id="oldPassword" name="oldPassword" style="width:180px" value="" required onkeyup="this.value=this.value.replace(/^ +| +$/g,'')"/>
+						<span style="color:red;" id="oldPassword-tips"></span>
+					</td>
+				</tr>
+				<tr>
+					<td class="righttd"><label>新密码:</label></td>
+					<td class="lefttd">
+						<input type="password" id="newPassword" name="newPassword" style="width:180px" value="" required onkeyup="this.value=this.value.replace(/^ +| +$/g,'')"/>
+						<span style="color:red;" id="newPassword-tips"></span>
+					</td>
+				</tr>
+				<tr>
+					<td class="righttd"><label>重复新密码:</label></td>
+					<td class="lefttd">
+						<input type="password" id="reNewPassword" name="reNewPassword" style="width:180px" value="" required onkeyup="this.value=this.value.replace(/^ +| +$/g,'')"/>
+						<span style="color:red;" id="reNewPassword-tips"></span>
+					</td>
+				</tr>
+				<tr>
+					<td></td>
+					<td>
+						<button class="btn" type="submit">&nbsp;<i class="icon-save"></i> 保存修改</button>&nbsp;&nbsp;
+					</td>
+				</tr>
+			</table>
+        </div>
+    </div>
+</div>
+</form>
+<script>
+$("#change-form").validate({
+	rules:{
+		oldPassword:{required:true},
+		newPassword:{required:true},
+		reNewPassword:{required:true,equalTo:"#newPassword"}
+	},
+	messages:{
+		oldPassword:{required:"请输入原密码"},
+		newPassword:{required:"请输入新密码"},
+		reNewPassword:{required:"请重复输入一次新密码",equalTo:'两次密码不一致'}
+	}
+});
+</script>

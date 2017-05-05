@@ -1,0 +1,48 @@
+<style>
+	.form-group{padding:10px 0}
+	.row-fluid{margin-top:10px}
+	.yf-text-right{text-align:right}
+	.error{color:#CD5555}
+	.noboder td{border:none}
+</style>
+<script type="text/javascript" src="${request.getContextPath()}/js/user-update.js"></script>
+<ul class="breadcrumb">
+    <li><a href="${request.getContextPath()}/admin/menu?menuId=AUTH">权限管理</a> <span class="divider">/</span></li>
+    <li><a href="${request.getContextPath()}/admin/menu?menuId=AUTH_ROLE">角色管理</a><span class="divider">/</span></li>
+    <li class="active">#if($!{role}) 角色修改 #else 角色添加  #end</li>
+</ul>
+#if($alertMsg)
+<div class="alert alert-$alertType">
+    <button type="button" class="close" data-dismiss="alert">×</button>
+    <strong>错误提示:</strong> $alertMsg!
+</div>
+#end
+<div style="width:98%;margin:20px auto">
+	<form class="form" id="roleAdd" action="role-add" method="POST">
+		<input type="hidden" id="roleId" name="roleId" value="$!{role.roleId}"/>
+		<input type="hidden" name="createDate" value="$!date.format('yyyy-MM-dd HH:mm:ss',$!{role.createDate})"/>
+		<table class="table noboder" style="width:800px;margin:0px auto;">
+			<tr>
+				<td>#required()角色名</td>
+				<td><input type="text" id="roleName" name="roleName"  style="width:400px" value="$!{role.roleName}"/></td>
+			</tr>
+			<tr>
+				<td>#nullable()描述</td>
+				<td>
+					<textarea name="roleDesc" style="width:400px;height:200px">$!{role.roleDesc}</textarea>
+				</td>
+			</tr>
+			<tr>
+				<td colspan="2" style="text-align:right">
+					<button class="btn" type="submit">&nbsp;
+						#if($!{role})
+							<i class="icon-edit"></i> 修改
+						#else
+							<i class="icon-plus"></i> 添加
+						#end
+					</button>
+				</td>
+			</tr>
+		</table> 
+	</form>
+</div>
