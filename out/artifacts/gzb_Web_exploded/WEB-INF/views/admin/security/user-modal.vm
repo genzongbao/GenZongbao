@@ -1,0 +1,111 @@
+<!-- 角色选择 -->
+<div class="modal hide fade" id="roleModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" style="overflow:auto;">
+	<div class="modal-dialog modal_div" role="document">
+		<div class="modal-content">
+         <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            <h4 class="modal-title" id="myModalLabel">添加角色</h4>
+         </div>
+         <div class="modal-body">
+         	<form id="edit-form" action="edit-users-role" method="POST">
+         		<input type="hidden" id="userId" name="userId"/>
+				<input type="hidden" id="roleIds" name="roleIds"/>
+				<table id="roleTable" class="table table-bordered table-hover check-table permission-table">
+					<tr>
+						<th></th>
+						<th>角色名</th>
+						<th>角色描述</th>
+					</tr>
+					#foreach($data in $roleList)
+						<tr>
+							<td><input type="checkbox" id="$!{data.roleId}" value="$!{data.roleId}"/></td>
+							<td style="width:150px;cursor: pointer;" onclick="checkedTd('$data.roleId')">
+								$data.roleName
+							</td>
+							<td>$data.roleDesc </td>
+						</tr>
+					#end
+				</table>
+			</form>				
+         </div>
+         <div class="modal-footer">
+            <button type="button" onclick="editPermission()" class="btn btn-primary">确认</button>
+            <button type="button" class="btn btn-default" data-dismiss="modal" aria-hidden="true">取消</button>
+         </div>
+      </div>
+   </div>
+</div>
+
+<!--添加管理员1-->
+<div class="modal fade" id="addUserModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" style="overflow:auto;">
+	<div class="modal-dialog modal_div" role="document">
+		<div class="modal-content">
+	        <div class="modal-header">
+	        	<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+	            <h4 class="modal-title" id="myModalLabel">添加后台用户</h4>
+	        </div>
+        	<form class="form" id="user-form" method="POST" onsubmit="return false" action="user-add">
+				<div class="modal-body">
+					<table id="userTable" class="permission-table">
+						<tr>
+							<th>用户昵称:</th>
+							<td>
+								<input type="text" name="loginName" id="loginName" value="$!user.loginName" remote="check-log-name" maxlength="18" />
+							</td>
+							<td style="text-align:left;">
+								<label for="loginName" class="error"></label>
+							</td>
+						</tr>
+						<tr>
+							<th>手机号:</th>
+							<td style="width:150px">
+							<input type="text" id="mobile" name="mobile"  maxlength="11" onblur="value=value.replace(/[^\d]/g,'')" onkeyup="value=value.replace(/[^\d]/g,'')" />
+							</td>
+							<td style="width:200px ;text-align:left;">
+								<label for="mobile" class="error"></label>
+							</td>
+						</tr>
+						<tr>
+							<th>登录密码:</th>
+							<td><input type="password" id="password" name="password"  maxlength="24" /></td>
+							<td style="text-align:left;">
+								<label for="password" class="error"></label>
+							</td>
+						</tr>
+						<tr>
+							<th>确认密码:</th>
+							<td>
+								<input type="password" name="repassword"  maxlength="24" />
+							</td>
+							<td style="text-align:left;">
+								<label for="repassword" class="error"></label>
+							</td>
+						</tr>
+						<tr>
+							<th>真实姓名:</th>
+							<td>
+								<input type="text" name="realName" maxlength="16" />
+							</td>
+							<td style="text-align:left;">
+								<label for="realName" class="error"></label>
+							</td>
+						</tr>
+						<tr>
+							<th>身份证号:</th>
+							<td>
+								<input type="text" id="idCardNo" name="idCardNo" value="" maxlength="18" onkeyup="value=value.replace(/[^\w\/]/ig,'')" onblur="value=value.replace(/[^\w\/]/ig,'')" />
+							</td>
+							<td style="width:200px ;text-align:left;">
+								<label for="idCardNo" class="error"></label>
+							</td>
+						</tr>
+					</table>
+				</div>
+		        <div class="modal-footer">
+		            <button type="submit" class="btn btn-primary">确认</button>
+		            <button type="button" class="btn btn-default" data-dismiss="modal" aria-hidden="true">取消</button>
+		        </div>
+			</form>
+      </div>
+   </div>
+</div>

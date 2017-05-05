@@ -1,0 +1,37 @@
+<style>
+body{font-size:1.5em;background-color:#e5e5e5;}
+.table{
+	width:100%;height:100%;
+}
+.table tr{
+	height:3em;background-color:#ffffff;
+}
+.table tr td div{
+	width:100%;height:100%;
+}
+.table tr td input{
+	width:100%;height:100%;
+	border-left:0em;border-top:0em;border-right:0em;border-bottom:1.5em;font-size:1.5em;
+}
+.sbd{
+	width:100%;height:3em;text-align:center;line-height:3em;background-color:#ffffff;
+}
+</style>
+<form id="form" method="POST" action="submit-tag">
+	<table class="table">
+		<input name="cusId" type="hidden" value="$!cusId" />
+		<input name="eventId" type="hidden" value="$!eventId" />
+		<tr>
+			<td style="width:30%">标签名</td>
+			<td><input name="eventTagName" /></td>
+		</tr>
+		<tr>
+			<td colspan="2"><div class="sbd" onclick="submitTag('$!cusId')">提交</div></td>
+		</tr>
+	</table>
+</form>
+<script>
+function submitTag(submitTag){
+	$("#form").submit();
+}
+</script>

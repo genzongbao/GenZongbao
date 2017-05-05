@@ -1,0 +1,215 @@
+body{
+    background: #efeff4;
+    width: 100%;
+    height: 100%;
+}
+.regTop{
+    width: 100%;
+    padding:8% 0 6%;
+    background: #50b4f9;/*;*/
+    text-align: center;
+    color: #ffffff;
+    position: relative;
+}
+.back{
+    position: absolute;
+    left: 5%;
+    top: 50%;
+    color: #ffffff;
+}
+.point{
+    padding: 6% 5%;
+}
+.content form input:not(:nth-child(6)){
+    border: 0;
+    border-bottom: 1px solid #c3c3c5;
+}
+.content form{
+    width: 100%;
+    height: 35.21%;
+}
+.message{
+    background: #ffffff;
+    padding:2% 5% 0 5%;
+    position: relative;
+}
+.message input{
+    width: 90%;
+    padding: 4% 0 4% 10%;
+    font-size: 0.875em;
+    font-family: "Microsoft YaHei";
+}
+.message .icons b{
+    position: absolute;
+    width: 3.75%;
+    height: 4%;
+    top: 8%;
+    left: 7%;
+}
+.message .icons_c b{
+    position: absolute;
+    width: 3.75%;
+    height: 4%;
+    top: 8%;
+    left: 7%;
+}
+.message .icons b img{
+    width: 100%;
+}
+.message .icons_c b img{
+    width: 100%;
+}
+.message .icons b:nth-child(1){
+    width: 4%;
+    top: 8%;
+    left: 6%;
+}
+.message .icons b:nth-child(2){
+    width: 4%;
+    top: 25%;
+    left: 6%;
+}
+.message .icons b:nth-child(3){
+	width: 4%;
+    top: 45%;
+    left: 6%;
+}
+.message .icons b:nth-child(4){
+	width: 4%;
+    top: 65%;
+    left: 6%;
+}
+.message .icons b:nth-child(5){
+	width: 4%;
+    top: 85%;
+    left: 6%;
+}
+/****======*/
+
+.message .icons_c b:nth-child(1){
+    width: 4%;
+    top: 8%;
+    left: 6%;
+}
+.message .icons_c b:nth-child(2){
+    width: 4%;
+    top: 35%;
+    left: 6%;
+}
+.message .icons_c b:nth-child(3){
+	width: 4%;
+    top: 85%;
+    left: 6%;
+}
+.message .icons_c b:nth-child(4){
+	width: 4%;
+    top: 58%;
+    left: 6%;
+}
+
+
+
+/****==========================*/
+
+
+.code{
+    position: absolute;
+    top: 84%;
+    right:10%;
+    color: #21a9f5;
+    font-size: 0.875em;
+    font-family: "Microsoft YaHei";
+}
+select{
+    width: 33%;
+    padding: 2% 1%;
+    margin: 5%;
+    font-size: 1em;
+    color: #909093;
+    border: solid 1px #909093;
+    font-family: "Microsoft YaHei";
+}
+.agree{
+    margin: 6% 5%;
+}
+.submit{
+    width: 84%;
+    margin: 2% 8%;
+    background: #21a9f5;
+    color: #ffffff;
+    border: 0;
+    padding: 3.25% 0;
+    font-size: 1em;
+    font-family: "Microsoft YaHei";
+}
+form .agree input[type="checkbox"] :default{
+    outline: 2px solid #21a9f5;
+}
+.companyRegister{
+	display: none;
+}
+
+/*==========忘记密码页面=======================*/
+.message .icons_f b{
+    position: absolute;
+    width: 3.75%;
+    height: 4%;
+    top: 8%;
+    left: 7%;
+}
+.message .icons_f b:nth-child(1){
+    width: 4%;
+    top: 10%;
+    left: 3%;
+}
+.message .icons_f b:nth-child(2){
+	width: 4%;
+    top: 70%;
+    left: 1%;
+}
+.line_margin{
+	width:100%;
+	height: 2.5em;
+}
+.reset_btn{
+	width: 84%;
+    margin: 15% 8%;
+    background: #A7ABDA;
+    color: #ffffff;
+    border: 0;
+    padding: 3.25% 0;
+    font-size: 1em;
+    font-family: "Microsoft YaHei";
+}
+.edit_btn{
+	width: 84%;
+    margin: 15% 8%;
+    background: #21a9f5;
+    color: #ffffff;
+    border: 0;
+    padding: 3.25% 0;
+    font-size: 1em;
+    font-family: "Microsoft YaHei";
+}
+.content_forget_password{
+	padding: 8.25% 0;
+}
+.title_name{
+	font-size: 22px;
+}
+.message_f{
+	height: 10em;
+	padding: 10% 5% 0% -2%;
+}
+.message_f input{
+	font-size: 1.2em;
+	line-height: 1.2em;
+}
+.code_f{
+    position: absolute;
+    top: 65%;
+    right:10%;
+    color: #21a9f5;
+    font-size: 1.2em;
+    font-family: "Microsoft YaHei";
+}

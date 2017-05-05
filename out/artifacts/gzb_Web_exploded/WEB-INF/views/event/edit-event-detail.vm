@@ -1,0 +1,81 @@
+<style>
+body{font-size:1.5em;background-color:#e5e5e5;}
+.table{
+	width:100%;height:100%;
+}
+.table tr{
+	height:3em;background-color:#ffffff;
+}
+.table tr td div{
+	width:100%;height:100%;
+}
+.table tr td input{
+	width:100%;height:100%;
+	border-left:0em;border-top:0em;border-right:0em;border-bottom:1.5em;font-size:1.5em;
+}
+.sbd{
+	width:100%;height:3em;text-align:center;line-height:3em;background-color:#ffffff;
+}
+.table tr td input{
+	width:100%;height:99%;
+	border-left:0em;border-top:0em;border-right:0em;border-bottom:1.5em;font-size:1.5em;
+}
+.table tr td textarea{
+	width:99%;height:99%;
+	border-left:0em;border-top:0em;border-right:0em;border-bottom:1.5em;font-size:1.5em;
+}
+.title{
+text-align:center;line-height:3em;background-color:#ffffff;
+}
+</style>
+<form id="form" method="POST" action="submit-event-detail">
+	<table class="table">
+		<input name="cusId" type="hidden" value="$!cusId" />
+		<input name="eventId" type="hidden" value="$!event.eventId" />
+		<input name="eventFiles" id="eventFiles" type="hidden" value="$!event.eventFiles" />
+		<tr>
+			<td><div class="title">事件名称</div></td>
+		</tr>
+		<tr>
+			<td><input type="text" id="eventName" name="eventName" value="$!event.eventName" /></td>
+		</tr>
+		<tr>
+			<td><div class="title">事件详情</div></td>
+		</tr>
+		<tr>
+			<td style="height:5em"><textarea  name="eventDetail">$!event.eventDetail</textarea ></td>
+		</tr>
+		<tr>
+			<td onclick="uploadFile()"><div class="title">附件</div></td>
+		</tr>
+		<tr>
+			<td ><div id="files" id="files">
+				#foreach($file in $files)
+					<a href="https://view.officeapps.live.com/op/view.aspx?src=http://www.genzongbao.com.cn/$!fileUrlPrefix/$file.fileId.$file.fileSuffix;" onclick="">$file.fileName.$file.fileSuffix</a>
+				#end
+			</div></td>
+		</tr>
+		<tr>
+			<td colspan="2"><div class="sbd" onclick="submit()">提交</div></td>
+		</tr>
+	</table>
+</form>
+<script>
+function submit(){
+	if($("#eventName").val()){
+		$("#form").submit();
+	} else {
+		window.android.error("请填写事件名称");
+	}
+}
+function uploadFile(){
+	window.android.showFileDialog();
+}
+function setEventFile(data){
+	var list = eval(data);
+	for(var i = 0 ; i<list.length;i++){
+		$("#files").html($("#files").html()+'<a href="$!fileUrlPrefix/'+list[i].fileId+'.'+list[i].fileSuffix+'" onclick="">'+list[i].fileName+'.'+list[i].fileSuffix+'   </a>');
+		$("#eventFiles").val($("#eventFiles").val()+","+list[i].fileId);
+	}
+}
+</script>
