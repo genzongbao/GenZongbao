@@ -13,7 +13,7 @@ import java.nio.charset.Charset;
  * @email fengbing8206320@sohu.com
  * @weixin f1908951579
  * @date 2017/5/6
- * @doc 类说明：ehcache工具类
+ * @doc 类说明：ehcache缓存工具类
  */
 @Component
 public class Memory {
